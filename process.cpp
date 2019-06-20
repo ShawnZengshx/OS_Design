@@ -1,88 +1,88 @@
 #include "process.h"
 
 
-//-----------------------------------------æŒ‡ä»¤ç±»å‡½æ•°å®ç°æ¨¡å—-----------------------------------------------------------------------
-//æ„é€ å‡½æ•° 
+//-----------------------------------------Ö¸ÁîÀàº¯ÊıÊµÏÖÄ£¿é-----------------------------------------------------------------------
+//¹¹Ôìº¯Êı 
 Instruc::Instruc()
 {
-	ID = 0;       //IDéƒ½åˆå§‹åŒ–ä¸º0 
-	State = 1;       //Instruc_Stateåˆå§‹åŒ–ä¸º1 
-	time = 0;   //å½“Instruc_State=0æˆ–1æ—¶, Instruc_Times=äº§ç”Ÿ[10-40]ä¹‹é—´çš„éšæœº10mså€æ•°çš„æ•´æ•°
+	ID = 0;       //ID¶¼³õÊ¼»¯Îª0 
+	State = 1;       //Instruc_State³õÊ¼»¯Îª1 
+	time = 0;   //µ±Instruc_State=0»ò1Ê±, Instruc_Times=²úÉú[10-40]Ö®¼äµÄËæ»ú10ms±¶ÊıµÄÕûÊı
 	addr = 0;
 }
 
 void Instruc::Init(int id,Time &timeq)
 {
-	ID = id;       //IDä»1å¼€å§‹ 
-	State = timeq.RandNum(1,2);       //Instruc_Stateåˆå§‹åŒ–ä¸º1æˆ–2
-	if(State == 1)//å½“Instruc_State=0æˆ–1æ—¶, Instruc_Times=äº§ç”Ÿ[10-40]ä¹‹é—´çš„éšæœº10mså€æ•°çš„æ•´æ•°ï¼›
+	ID = id;       //ID´Ó1¿ªÊ¼ 
+	State = timeq.RandNum(1,2);       //Instruc_State³õÊ¼»¯Îª1»ò2
+	if(State == 1)//µ±Instruc_State=0»ò1Ê±, Instruc_Times=²úÉú[10-40]Ö®¼äµÄËæ»ú10ms±¶ÊıµÄÕûÊı£»
 	{
 		time = timeq.RandNum(1,4)*10;
 	}
-	else//å½“ Instruc_State=2 æ—¶, Instruc_Times=50ï¼Œç”¨æˆ·è¿›ç¨‹å‘ç”Ÿ I/O é˜»å¡è¯·æ±‚ï¼Œå¹¶å‡è®¾å®Œæˆ I/O æ•°æ®é€šä¿¡æ—¶é—´ä¸º 50msï¼Œä¹‹åå¯å”¤é†’
+	else//µ± Instruc_State=2 Ê±, Instruc_Times=50£¬ÓÃ»§½ø³Ì·¢Éú I/O ×èÈûÇëÇó£¬²¢¼ÙÉèÍê³É I/O Êı¾İÍ¨ĞÅÊ±¼äÎª 50ms£¬Ö®ºó¿É»½ĞÑ
 	{
 		time = 50;
 	}
-	addr = ID*1000 +	timeq.RandNum(0,999); //ç”ŸæˆæŒ‡ä»¤åœ°å€ 
+	addr = ID*1000 +	timeq.RandNum(0,999); //Éú³ÉÖ¸ÁîµØÖ· 
 }
 
-//ä¿®æ”¹æŒ‡ä»¤ID 
+//ĞŞ¸ÄÖ¸ÁîID 
 void Instruc::changeID(int temp)
 {
 	ID = temp;
 }
 
-//ä¿®æ”¹æŒ‡ä»¤çŠ¶æ€ 
+//ĞŞ¸ÄÖ¸Áî×´Ì¬ 
 void Instruc::changeState(int temp)
 {
 	State = temp;
 }
 
 
-//--------------------------------------------è¿›ç¨‹ç±»å‡½æ•°å®ç°æ¨¡å—---------------------------------------------------------------------
-//æ„é€ å‡½æ•° 
+//--------------------------------------------½ø³ÌÀàº¯ÊıÊµÏÖÄ£¿é---------------------------------------------------------------------
+//¹¹Ôìº¯Êı 
 Process::Process()
 {
-	ProID = 0;      //è¿›ç¨‹ç¼–å·ï¼ˆProIDï¼‰,å¦‚æœæ²¡æœ‰è¾“å…¥IDï¼Œé»˜è®¤ç½®ä¸º0 
+	ProID = 0;      //½ø³Ì±àºÅ£¨ProID£©,Èç¹ûÃ»ÓĞÊäÈëID£¬Ä¬ÈÏÖÃÎª0 
 	
-	Priority = 5;	//è¿›ç¨‹ä¼˜å…ˆæ•°ï¼ˆPriorityï¼‰,å¦‚æœæ²¡æœ‰è¾“å…¥,é»˜è®¤ç½®ä¸º5
+	Priority = 5;	//½ø³ÌÓÅÏÈÊı£¨Priority£©,Èç¹ûÃ»ÓĞÊäÈë,Ä¬ÈÏÖÃÎª5
 	
-	InTimes =0;   //è¿›ç¨‹åˆ›å»ºæ—¶é—´ï¼ˆInTimesï¼‰ï¼šç¨‹åºè¿è¡Œä»0å¼€å§‹è®¡æ—¶ï¼Œåœ¨2s(å³2000ms)å†…éšæœºç”Ÿæˆæ—¶é—´é€’å¢åºåˆ—ã€‚[ä¸è¿›ç¨‹IDç›¸å…³]
+	InTimes =0;   //½ø³Ì´´½¨Ê±¼ä£¨InTimes£©£º³ÌĞòÔËĞĞ´Ó0¿ªÊ¼¼ÆÊ±£¬ÔÚ2s(¼´2000ms)ÄÚËæ»úÉú³ÉÊ±¼äµİÔöĞòÁĞ¡£[Óë½ø³ÌIDÏà¹Ø]
 	
-	RunTimes = 0;  //è¿›ç¨‹è¿è¡Œæ—¶é—´ï¼ˆRunTimeï¼‰:ç»Ÿè®¡è®°å½•è¿›ç¨‹å½“å‰å·²è¿è¡Œäº†å¤šå°‘æ—¶é—´ï¼Œæ­¤å­—æ®µå¼€å§‹æ—¶ä¸ºç©ºï¼Œè¿›ç¨‹è¿è¡Œè¿‡ç¨‹ä¸­ä¸æ–­ä¿å­˜å’Œè®°å½•ã€‚
+	RunTimes = 0;  //½ø³ÌÔËĞĞÊ±¼ä£¨RunTime£©:Í³¼Æ¼ÇÂ¼½ø³Ìµ±Ç°ÒÑÔËĞĞÁË¶àÉÙÊ±¼ä£¬´Ë×Ö¶Î¿ªÊ¼Ê±Îª¿Õ£¬½ø³ÌÔËĞĞ¹ı³ÌÖĞ²»¶Ï±£´æºÍ¼ÇÂ¼¡£
 	
-	InstrucNum = 20; //è¿›ç¨‹åŒ…å«çš„æŒ‡ä»¤æ•°ç›®ï¼ˆInstrucNumï¼‰ï¼šç”¨[5-20]ä»¥å†…çš„éšæœºæ•´æ•°äº§ç”Ÿï¼›
+	InstrucNum = 20; //½ø³Ì°üº¬µÄÖ¸ÁîÊıÄ¿£¨InstrucNum£©£ºÓÃ[5-20]ÒÔÄÚµÄËæ»úÕûÊı²úÉú£»
 	
-	PSW = 1;  //PSWä¸­ä¿å­˜è¯¥è¿›ç¨‹å½“å‰æ‰§è¡Œçš„æŒ‡ä»¤ç¼–å·ã€‚ä¾‹å¦‚ï¼Œ1è¡¨ç¤ºæ­£åœ¨æ‰§è¡Œç¬¬1æ¡æŒ‡ä»¤ 
+	PSW = 1;  //PSWÖĞ±£´æ¸Ã½ø³Ìµ±Ç°Ö´ĞĞµÄÖ¸Áî±àºÅ¡£ÀıÈç£¬1±íÊ¾ÕıÔÚÖ´ĞĞµÚ1ÌõÖ¸Áî 
 	
-	ProState = 1;  //è¿›ç¨‹çŠ¶æ€ï¼ˆProStateï¼‰:0ä¸ºé˜»å¡æ€ï¼Œ1ä¸ºå°±ç»ªæ€ï¼Œ2ä¸ºè¿è¡Œæ€ã€‚é»˜è®¤ç½®ä¸ºå°±ç»ªæ€ 
+	ProState = 1;  //½ø³Ì×´Ì¬£¨ProState£©:0Îª×èÈûÌ¬£¬1Îª¾ÍĞ÷Ì¬£¬2ÎªÔËĞĞÌ¬¡£Ä¬ÈÏÖÃÎª¾ÍĞ÷Ì¬ 
 	
-	instruc_arry = new Instruc[InstrucNum];  //éšæœºäº§ç”ŸNæ¡æŒ‡ä»¤ 
+	instruc_arry = new Instruc[InstrucNum];  //Ëæ»ú²úÉúNÌõÖ¸Áî 
 	
 	alltime = 0; 
 }
 
 Process::Process(int id,int intime,int instrucnum,Time &timeq)
 {
-	ProID = id;      //è¿›ç¨‹ç¼–å·ï¼ˆProIDï¼‰,å¦‚æœæ²¡æœ‰è¾“å…¥IDï¼Œé»˜è®¤ç½®ä¸º0 
+	ProID = id;      //½ø³Ì±àºÅ£¨ProID£©,Èç¹ûÃ»ÓĞÊäÈëID£¬Ä¬ÈÏÖÃÎª0 
 	
 	JobId = id;
 	
-	Priority = 5;	//è¿›ç¨‹ä¼˜å…ˆæ•°ï¼ˆPriorityï¼‰,å¦‚æœæ²¡æœ‰è¾“å…¥,é»˜è®¤ç½®ä¸º5
+	Priority = 5;	//½ø³ÌÓÅÏÈÊı£¨Priority£©,Èç¹ûÃ»ÓĞÊäÈë,Ä¬ÈÏÖÃÎª5
 	
-	InTimes = intime;   //è¿›ç¨‹åˆ›å»ºæ—¶é—´ï¼ˆInTimesï¼‰ï¼šç¨‹åºè¿è¡Œä»0å¼€å§‹è®¡æ—¶ï¼Œåœ¨2s(å³2000ms)å†…éšæœºç”Ÿæˆæ—¶é—´é€’å¢åºåˆ—ã€‚[ä¸è¿›ç¨‹IDç›¸å…³]
+	InTimes = intime;   //½ø³Ì´´½¨Ê±¼ä£¨InTimes£©£º³ÌĞòÔËĞĞ´Ó0¿ªÊ¼¼ÆÊ±£¬ÔÚ2s(¼´2000ms)ÄÚËæ»úÉú³ÉÊ±¼äµİÔöĞòÁĞ¡£[Óë½ø³ÌIDÏà¹Ø]
 	
-	RunTimes = 0;  //è¿›ç¨‹è¿è¡Œæ—¶é—´ï¼ˆRunTimeï¼‰:ç»Ÿè®¡è®°å½•è¿›ç¨‹å½“å‰å·²è¿è¡Œäº†å¤šå°‘æ—¶é—´ï¼Œæ­¤å­—æ®µå¼€å§‹æ—¶ä¸ºç©ºï¼Œè¿›ç¨‹è¿è¡Œè¿‡ç¨‹ä¸­ä¸æ–­ä¿å­˜å’Œè®°å½•ã€‚
+	RunTimes = 0;  //½ø³ÌÔËĞĞÊ±¼ä£¨RunTime£©:Í³¼Æ¼ÇÂ¼½ø³Ìµ±Ç°ÒÑÔËĞĞÁË¶àÉÙÊ±¼ä£¬´Ë×Ö¶Î¿ªÊ¼Ê±Îª¿Õ£¬½ø³ÌÔËĞĞ¹ı³ÌÖĞ²»¶Ï±£´æºÍ¼ÇÂ¼¡£
 	
-	InstrucNum = instrucnum; //è¿›ç¨‹åŒ…å«çš„æŒ‡ä»¤æ•°ç›®ï¼ˆInstrucNumï¼‰ï¼šç”¨[5-20]ä»¥å†…çš„éšæœºæ•´æ•°äº§ç”Ÿï¼›
+	InstrucNum = instrucnum; //½ø³Ì°üº¬µÄÖ¸ÁîÊıÄ¿£¨InstrucNum£©£ºÓÃ[5-20]ÒÔÄÚµÄËæ»úÕûÊı²úÉú£»
 	
-	PSW = 1;  //PSWä¸­ä¿å­˜è¯¥è¿›ç¨‹å½“å‰æ‰§è¡Œçš„æŒ‡ä»¤ç¼–å·ã€‚ä¾‹å¦‚ï¼Œ1è¡¨ç¤ºæ­£åœ¨æ‰§è¡Œç¬¬1æ¡æŒ‡ä»¤ 
+	PSW = 1;  //PSWÖĞ±£´æ¸Ã½ø³Ìµ±Ç°Ö´ĞĞµÄÖ¸Áî±àºÅ¡£ÀıÈç£¬1±íÊ¾ÕıÔÚÖ´ĞĞµÚ1ÌõÖ¸Áî 
 	
-	ProState = 1;  //è¿›ç¨‹çŠ¶æ€ï¼ˆProStateï¼‰:0ä¸ºé˜»å¡æ€ï¼Œ1ä¸ºå°±ç»ªæ€ï¼Œ2ä¸ºè¿è¡Œæ€ã€‚é»˜è®¤ç½®ä¸ºå°±ç»ªæ€ 
+	ProState = 1;  //½ø³Ì×´Ì¬£¨ProState£©:0Îª×èÈûÌ¬£¬1Îª¾ÍĞ÷Ì¬£¬2ÎªÔËĞĞÌ¬¡£Ä¬ÈÏÖÃÎª¾ÍĞ÷Ì¬ 
 	
-	instruc_arry = new Instruc[InstrucNum];  //äº§ç”ŸNæ¡æŒ‡ä»¤ 
+	instruc_arry = new Instruc[InstrucNum];  //²úÉúNÌõÖ¸Áî 
 	
-	for(int j = 0;j < InstrucNum;j++)//åˆå§‹åŒ–å„ä¸ªæŒ‡ä»¤ 
+	for(int j = 0;j < InstrucNum;j++)//³õÊ¼»¯¸÷¸öÖ¸Áî 
 	{
 		instruc_arry[j].Init(j+1,timeq);
 	}
@@ -90,7 +90,7 @@ Process::Process(int id,int intime,int instrucnum,Time &timeq)
 	alltime = 0; 
 }
 
-//è¿›ç¨‹çš„åˆå§‹åŒ– 
+//½ø³ÌµÄ³õÊ¼»¯ 
 void Process::proinit(int m_ID,int m_priority,int m_intimes)
 {
 	ProID = m_ID;   
@@ -98,70 +98,70 @@ void Process::proinit(int m_ID,int m_priority,int m_intimes)
 	InTimes = m_intimes; 
 } 
 
-//è¿›ç¨‹çš„åˆ›å»º
+//½ø³ÌµÄ´´½¨
 int Process::profork(PCB_Table &L,LinkQueue &ready)
 {
 	Process temp;
 	temp = *this;	
-	ready.EnQueue(temp);//ç§»å…¥å°±ç»ªé˜Ÿåˆ—
-	cout<<"è¿›ç¨‹"<<temp.ProID<<"å·²ç§»å…¥å°±ç»ªé˜Ÿåˆ—ï¼"<<endl;	
-	//é€šçŸ¥æŸäº›æ¨¡å—ï¼Œç›‘æµ‹ç¨‹åº	
-	L.InsertPCB(temp,ProID);//ç§»å…¥PCBè¡¨ 
-	cout<<"è¿›ç¨‹"<<temp.ProID<<"å·²ç§»å…¥PCBè¡¨ï¼"<<endl;		
+	ready.EnQueue(temp);//ÒÆÈë¾ÍĞ÷¶ÓÁĞ
+	cout<<"½ø³Ì"<<temp.ProID<<"ÒÑÒÆÈë¾ÍĞ÷¶ÓÁĞ£¡"<<endl;	
+	//Í¨ÖªÄ³Ğ©Ä£¿é£¬¼à²â³ÌĞò	
+	L.InsertPCB(temp,ProID);//ÒÆÈëPCB±í 
+	cout<<"½ø³Ì"<<temp.ProID<<"ÒÑÒÆÈëPCB±í£¡"<<endl;		
 	return 0;	
 }
 
-//è¿›ç¨‹çš„ç»ˆæ­¢
+//½ø³ÌµÄÖÕÖ¹
 int Process::prokill(PCB_Table &L,LinkQueue &finish)
 {
 	Process temp;
-	//ä»ç›¸åº”çš„é˜Ÿåˆ—ä¸­ç§»é™¤
+	//´ÓÏàÓ¦µÄ¶ÓÁĞÖĞÒÆ³ı
 	finish.DeQueue(temp);
-	//ç§»å‡ºPCBè¡¨
+	//ÒÆ³öPCB±í
 	L.DeleteProID(ProID);
-	//è½¬å‘ç³»ç»Ÿè°ƒåº¦å·¥ä½œ 
+	//×ªÏòÏµÍ³µ÷¶È¹¤×÷ 
 	return ProID;
 }
 
-//è¿›ç¨‹çš„é˜»å¡
+//½ø³ÌµÄ×èÈû
 int Process::problock(PCB_Table &L,LinkQueue &block,Cpu CPU)
 {
-	//ä¿æŠ¤ç°åœºä¿¡æ¯
+	//±£»¤ÏÖ³¡ĞÅÏ¢
 	CPU.Sceneprotection(L.process[ProID]);
-	//ä¿®æ”¹è¿›ç¨‹çŠ¶æ€
+	//ĞŞ¸Ä½ø³Ì×´Ì¬
 	L.process[ProID].ProState = 0;
-	//ç§»å…¥ç›¸å…³é˜Ÿåˆ— 
+	//ÒÆÈëÏà¹Ø¶ÓÁĞ 
 	block.EnQueue(L.process[ProID]);
 	return 0;
 }
 
-//è¿›ç¨‹çš„å”¤é†’ 
+//½ø³ÌµÄ»½ĞÑ 
 int Process::procall(PCB_Table &L,LinkQueue &ready,LinkQueue &block)
 {
-	//ä»é˜»å¡é˜Ÿåˆ—ç§»åˆ°å°±ç»ªé˜Ÿåˆ—
+	//´Ó×èÈû¶ÓÁĞÒÆµ½¾ÍĞ÷¶ÓÁĞ
 	Process e;
 	block.DeQueue(e);
 	ready.EnQueue(e); 
-	//ä¿®æ”¹è¿›ç¨‹çŠ¶æ€ 
+	//ĞŞ¸Ä½ø³Ì×´Ì¬ 
 	L.process[ProID].ProState = 1;
 	return 0;
 }
 
-//------------------------------------------PCBç±»å‡½æ•°å®ç°æ¨¡å—--------------------------------------------------------------------------
-//æ„é€ å‡½æ•° 
+//------------------------------------------PCBÀàº¯ÊıÊµÏÖÄ£¿é--------------------------------------------------------------------------
+//¹¹Ôìº¯Êı 
 PCB_Table::PCB_Table()
 {
-	process = new Process[20];   //åˆ†é…åˆå§‹åŒ–è¿›ç¨‹è¡¨ç©ºé—´ 
-	length = 0;   // PCBä¸­è¿›ç¨‹ä¸ªæ•°åˆå§‹åŒ–ä¸º0
+	process = new Process[20];   //·ÖÅä³õÊ¼»¯½ø³Ì±í¿Õ¼ä 
+	length = 0;   // PCBÖĞ½ø³Ì¸öÊı³õÊ¼»¯Îª0
 }
 
-//åœ¨PCBè¡¨çš„ç¬¬iä¸ªæ•°æ®å…ƒç´ ä¹‹å‰æ’å…¥ä¸€ä¸ªè¿›ç¨‹x (PCBè¡¨çš„0ä½ç©ºå‡º)
+//ÔÚPCB±íµÄµÚi¸öÊı¾İÔªËØÖ®Ç°²åÈëÒ»¸ö½ø³Ìx (PCB±íµÄ0Î»¿Õ³ö)
 void PCB_Table::InsertPCB(Process x,int i)
 {
 	int k;
-	if(i < 1 || i > length + 1)  //åˆ¤æ–­æ’å…¥ä½ç½®æ˜¯å¦åˆæ³•ï¼Œä¸åˆæ³•è¾“å‡ºé”™è¯¯æç¤º
+	if(i < 1 || i > length + 1)  //ÅĞ¶Ï²åÈëÎ»ÖÃÊÇ·ñºÏ·¨£¬²»ºÏ·¨Êä³ö´íÎóÌáÊ¾
 	{
-		cout<<"æ’å…¥ä½ç½®é”™è¯¯ï¼ï¼"<<endl;
+		cout<<"²åÈëÎ»ÖÃ´íÎó£¡£¡"<<endl;
 	}
 	else
 	{
@@ -174,7 +174,7 @@ void PCB_Table::InsertPCB(Process x,int i)
 	}
 } 
 
-//æ ¹æ®è¿›ç¨‹IDï¼Œåœ¨PCBè¡¨ä¸­åˆ é™¤ç›¸åº”è¿›ç¨‹ 
+//¸ù¾İ½ø³ÌID£¬ÔÚPCB±íÖĞÉ¾³ıÏàÓ¦½ø³Ì 
 void PCB_Table::DeleteProID(int id)
 {
 	int i;
@@ -195,11 +195,11 @@ void PCB_Table::DeleteProID(int id)
 	}
 	if(flag == 0)
 	{
-		cout<<"PCBè¡¨ä¸­æ²¡æœ‰è¯¥IDçš„è¿›ç¨‹"<<endl;
+		cout<<"PCB±íÖĞÃ»ÓĞ¸ÃIDµÄ½ø³Ì"<<endl;
 	}
 } 
 
-//æ ¹æ®è¿›ç¨‹IDï¼ŒæŸ¥æ‰¾PCBè¡¨ä¸­çš„æŸä¸ªè¿›ç¨‹ ,è¿”å›ç»™åŒç±»çš„å‚æ•° 
+//¸ù¾İ½ø³ÌID£¬²éÕÒPCB±íÖĞµÄÄ³¸ö½ø³Ì ,·µ»Ø¸øÍ¬ÀàµÄ²ÎÊı 
 void PCB_Table::SearchProID(int id,Process &temp)
 {
 	int i;
@@ -215,36 +215,36 @@ void PCB_Table::SearchProID(int id,Process &temp)
 	}
 	if(flag == 0)
 	{
-		cout<<"PCBè¡¨ä¸­æ²¡æœ‰è¯¥IDçš„è¿›ç¨‹"<<endl;
+		cout<<"PCB±íÖĞÃ»ÓĞ¸ÃIDµÄ½ø³Ì"<<endl;
 	}
 } 
 
-//æ‰“å°PCBè¡¨ 
+//´òÓ¡PCB±í 
 void PCB_Table::PrintTable(char *a)
 {
 	ofstream file;
-	file.open(a,ios::trunc); //ios::truncè¡¨ç¤ºåœ¨æ‰“å¼€æ–‡ä»¶å‰å°†æ–‡ä»¶æ¸…ç©º
-	//int ProID;//è¿›ç¨‹ç¼–å· 
-	//	int JobId;//è¿›ç¨‹å¯¹åº”ä½œä¸šID 
-	//	int Priority;//è¿›ç¨‹ä¼˜å…ˆæ•° 
-	//	int InTimes;//è¿›ç¨‹åˆ›å»ºæ—¶é—´ 
-	//	int ProState;//è¿›ç¨‹çŠ¶æ€ 
-	//	int RunTimes;//è¿›ç¨‹è¿è¡Œæ—¶é—´ 
-	//	int InstrucNum;//è¿›ç¨‹åŒ…å«çš„æŒ‡ä»¤æ•°ç›® 
-	//	Instruc *instruc_arry;//è¿›ç¨‹åŒ…å«çš„æŒ‡ä»¤æ•°ç»„æŒ‡é’ˆ 
-	//	int alltime;//è¿›ç¨‹å‘¨è½¬æ—¶é—´ 
+	file.open(a,ios::trunc); //ios::trunc±íÊ¾ÔÚ´ò¿ªÎÄ¼şÇ°½«ÎÄ¼şÇå¿Õ
+	//int ProID;//½ø³Ì±àºÅ 
+	//	int JobId;//½ø³Ì¶ÔÓ¦×÷ÒµID 
+	//	int Priority;//½ø³ÌÓÅÏÈÊı 
+	//	int InTimes;//½ø³Ì´´½¨Ê±¼ä 
+	//	int ProState;//½ø³Ì×´Ì¬ 
+	//	int RunTimes;//½ø³ÌÔËĞĞÊ±¼ä 
+	//	int InstrucNum;//½ø³Ì°üº¬µÄÖ¸ÁîÊıÄ¿ 
+	//	Instruc *instruc_arry;//½ø³Ì°üº¬µÄÖ¸ÁîÊı×éÖ¸Õë 
+	//	int alltime;//½ø³ÌÖÜ×ªÊ±¼ä 
 	file<<"ProID"<<setw(15)<<"JobId"<<setw(15)<<"InTimes"<<setw(15)<<"ProState"<<setw(15)<<"RunTime"<<setw(15)<<"InstrucNum"
 			<<setw(15)<<"PSW"<<setw(15)<<"Instruc_ID"<<setw(20)<<"Instruc_State"<<setw(20)<<"Instruc_Times(ms)"<<setw(20)<<"Instruc_Addr";
 	for(int i = 1;i <= length;i++)
 	{
 		file<<"\r\n"<<process[i].ProID<<setw(15)<<process[i].JobId<<setw(15)<<process[i].InTimes<<setw(15)<<
 			process[i].ProState<<setw(15)<<process[i].RunTimes<<setw(15)<<process[i].InstrucNum<<setw(18)<<process[i].PSW<<setw(15);
-		//è¾“å‡ºæŒ‡ä»¤çš„ä¿¡æ¯
+		//Êä³öÖ¸ÁîµÄĞÅÏ¢
 		for(int j=0;j<process[i].InstrucNum;j++)
 		{
 			file<<process[i].instruc_arry[j].ID<<setw(15)<<process[i].instruc_arry[j].State<<setw(15)
 				<<process[i].instruc_arry[j].time<<setw(25)<<process[i].instruc_arry[j].addr;
-			if(j<process[i].InstrucNum-1)//è¾“å‡ºå‰é¢çš„ç©ºæ ¼
+			if(j<process[i].InstrucNum-1)//Êä³öÇ°ÃæµÄ¿Õ¸ñ
 			{
 				file<<"\r\n"<<setw(109);
 			}	
@@ -253,16 +253,16 @@ void PCB_Table::PrintTable(char *a)
 	file.close();
 } 
 
-//-----------------------------------------é“¾é˜Ÿåˆ—ç±»å®ç°å‡½æ•°-------------------------------------------------------------------------
+//-----------------------------------------Á´¶ÓÁĞÀàÊµÏÖº¯Êı-------------------------------------------------------------------------
 LinkQueue::LinkQueue()
 {
-	rear = new QNode;  //ä¸ºé˜Ÿåˆ—çš„å¤´å°¾ç»“ç‚¹åˆ†é…ç©ºé—´
+	rear = new QNode;  //Îª¶ÓÁĞµÄÍ·Î²½áµã·ÖÅä¿Õ¼ä
 	front = rear;
 	if (!front )  return ;
 	front->next = NULL;
 }
 
-void LinkQueue::EnQueue(Process e)  //å…¥é˜Ÿåˆ—
+void LinkQueue::EnQueue(Process e)  //Èë¶ÓÁĞ
 {
 	QueuePtr p;
 	p = new QNode;
@@ -273,43 +273,43 @@ void LinkQueue::EnQueue(Process e)  //å…¥é˜Ÿåˆ—
 	rear = p;
 }
 
-void LinkQueue::DeQueue(Process &e) //å‡ºé˜Ÿåˆ—
+void LinkQueue::DeQueue(Process &e) //³ö¶ÓÁĞ
 {
 	if(front == rear)
 	{
-		cout<<"è¯¥é˜Ÿåˆ—ä¸ºç©ºé˜Ÿåˆ—chu"<<endl;
+		cout<<"¸Ã¶ÓÁĞÎª¿Õ¶ÓÁĞchu"<<endl;
 	}
 	QueuePtr p;
 	p = front ->next ;
 	e = p->data ;
-	//printf("å‡ºé˜Ÿåˆ—å®Œæˆï¼Œè¢«åˆ é™¤çš„å…ƒç´ ä¸º%d\n",e);
+	//printf("³ö¶ÓÁĞÍê³É£¬±»É¾³ıµÄÔªËØÎª%d\n",e);
 	front ->next = p->next ;
-	if (rear == p ) rear = front ; //å¦‚æœé“¾é˜Ÿåˆ—åŸæœ¬åªæœ‰ä¸€ä¸ªå…ƒç´ ï¼Œè¦åŒæ—¶ä¿®æ”¹é˜Ÿå°¾æŒ‡é’ˆ
+	if (rear == p ) rear = front ; //Èç¹ûÁ´¶ÓÁĞÔ­±¾Ö»ÓĞÒ»¸öÔªËØ£¬ÒªÍ¬Ê±ĞŞ¸Ä¶ÓÎ²Ö¸Õë
 	delete p;
 }
 
-void LinkQueue::GetTop(Process &e)  //å–é˜Ÿåˆ—å¤´å…ƒç´ 
+void LinkQueue::GetTop(Process &e)  //È¡¶ÓÁĞÍ·ÔªËØ
 {
 	if (rear ==  front ) 
 	{
-		cout<<"è¯¥é˜Ÿåˆ—ä¸ºç©ºé˜Ÿåˆ—"<<endl;
+		cout<<"¸Ã¶ÓÁĞÎª¿Õ¶ÓÁĞ"<<endl;
 	}
 	QueuePtr p;
 	p = front ->next ;
 	e = p->data;
 }
 
-void LinkQueue::PrintQueue() //éå†é˜Ÿåˆ—
+void LinkQueue::PrintQueue() //±éÀú¶ÓÁĞ
 {
 	if (front == rear)
 	{
-		cout<<"è¯¥é˜Ÿåˆ—ä¸ºç©ºé˜Ÿåˆ—"<<endl;
+		cout<<"¸Ã¶ÓÁĞÎª¿Õ¶ÓÁĞ"<<endl;
 		return;
 	}
 	
 	QueuePtr p;
 	p = front->next ;
-	cout<<"è¯¥é˜Ÿåˆ—ä¸­çš„ProIDå¦‚ä¸‹ï¼š";
+	cout<<"¸Ã¶ÓÁĞÖĞµÄProIDÈçÏÂ£º";
 	while(p)
 	{
 		cout<<p->data.ProID<<",";
@@ -318,11 +318,11 @@ void LinkQueue::PrintQueue() //éå†é˜Ÿåˆ—
 	cout<<endl;
 }
 
-int LinkQueue::LenQueue()  //å–é˜Ÿåˆ—é•¿åº¦
+int LinkQueue::LenQueue()  //È¡¶ÓÁĞ³¤¶È
 {
 	if (front == rear )
 	{
-		//cout<<"è¯¥é˜Ÿåˆ—ä¸ºç©º"<<endl;
+		//cout<<"¸Ã¶ÓÁĞÎª¿Õ"<<endl;
 		return 0; 
 	}
 	int i=0;
@@ -341,13 +341,13 @@ void LinkQueue::MinPriority(Process &e)
 	QueuePtr p,min,f;
 	if(front == rear)
 	{
-		cout<<"é˜Ÿåˆ—ä¸ºç©º!"<<"\n";
+		cout<<"¶ÓÁĞÎª¿Õ!"<<"\n";
 	}
 	else
 	{
-		min = front->next;//ç¬¬ä¸€ä¸ªèŠ‚ç‚¹ 
-		f = front;//pèŠ‚ç‚¹çš„å‰ä¸€ä¸ªèŠ‚ç‚¹ 
-		p = min;//ç¬¬äºŒä¸ªèŠ‚ç‚¹ 
+		min = front->next;//µÚÒ»¸ö½Úµã 
+		f = front;//p½ÚµãµÄÇ°Ò»¸ö½Úµã 
+		p = min;//µÚ¶ş¸ö½Úµã 
 		while(p->next)
 		{
 			f = p;	
@@ -371,7 +371,7 @@ void LinkQueue::sort()
 
 	p =front ;r=p->next->next;
 	if(front==rear)
-		cout<<"é˜Ÿåˆ—ä¸ºç©º!"<<"\n";
+		cout<<"¶ÓÁĞÎª¿Õ!"<<"\n";
 	for(int i=0;i<6;i++)
 	while(p->next->next)
 	{
@@ -397,7 +397,7 @@ void LinkQueue::sort()
 	QueuePtr p,q;
 	p=front;
 	if(front == rear)
-		cout<<"é˜Ÿåˆ—ä¸ºç©ºï¼"<<"\n";
+		cout<<"¶ÓÁĞÎª¿Õ£¡"<<"\n";
 	while(p->next)
 	{
 		if(p->next->data.ProID==v)

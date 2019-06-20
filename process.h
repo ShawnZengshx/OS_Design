@@ -1,93 +1,93 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-//ç›¸å…³å¤´æ–‡ä»¶å£°æ˜ 
+//Ïà¹ØÍ·ÎÄ¼şÉùÃ÷ 
 #include "utils.h"
 #include "hardware.h"
 
-//hardware.hå¤´æ–‡ä»¶ä¸­çš„ç›¸å…³ç±»å£°æ˜ 
+//hardware.hÍ·ÎÄ¼şÖĞµÄÏà¹ØÀàÉùÃ÷ 
 class Cpu;//cpu
-class Memory;//å†…å­˜
+class Memory;//ÄÚ´æ
 class Time;
 
-//process.hç›¸å…³ç±»å£°æ˜ 
-class Instruc;//æŒ‡ä»¤ç±» 
-class Process;//è¿›ç¨‹ç±» 
-class PCB_Table;//è¿›ç¨‹è¡¨ç±» 
-class LinkQueue;//é“¾é˜Ÿåˆ—ç±» 
+//process.hÏà¹ØÀàÉùÃ÷ 
+class Instruc;//Ö¸ÁîÀà 
+class Process;//½ø³ÌÀà 
+class PCB_Table;//½ø³Ì±íÀà 
+class LinkQueue;//Á´¶ÓÁĞÀà 
 
-//------------------------------------------æŒ‡ä»¤ç±»-------------------------------------------------- 
+//------------------------------------------Ö¸ÁîÀà-------------------------------------------------- 
 class Instruc
 {
 	public:
-		int ID;//æŒ‡ä»¤ID
-		int State;//æŒ‡ä»¤çŠ¶æ€æ ‡å¿—ï¼Œ1ä¸ºç”¨æˆ·å¤ªæ“ä½œï¼Œ2ä¸ºI/Oæ“ä½œ 
-		int time;//å•æ¡æŒ‡ä»¤è¿è¡Œæ—¶é—´ 
-		int addr;//æŒ‡ä»¤åœ°å€,ID*1000+Random[0,999] 
+		int ID;//Ö¸ÁîID
+		int State;//Ö¸Áî×´Ì¬±êÖ¾£¬1ÎªÓÃ»§Ì«²Ù×÷£¬2ÎªI/O²Ù×÷ 
+		int time;//µ¥ÌõÖ¸ÁîÔËĞĞÊ±¼ä 
+		int addr;//Ö¸ÁîµØÖ·,ID*1000+Random[0,999] 
 		
-		Instruc();//æ„é€ å‡½æ•° 
-		void Init(int id,Time &timeq);//æ„é€ å‡½æ•° 
+		Instruc();//¹¹Ôìº¯Êı 
+		void Init(int id,Time &timeq);//¹¹Ôìº¯Êı 
 		
-		void changeID(int temp);  //ä¿®æ”¹æŒ‡ä»¤ID 
-		void changeState(int temp);  //ä¿®æ”¹æŒ‡ä»¤çŠ¶æ€ 
+		void changeID(int temp);  //ĞŞ¸ÄÖ¸ÁîID 
+		void changeState(int temp);  //ĞŞ¸ÄÖ¸Áî×´Ì¬ 
 
 	protected:		
 };
 
 
-//-----------------------------------------è¿›ç¨‹ç±»--------------------------------------------------------- 
+//-----------------------------------------½ø³ÌÀà--------------------------------------------------------- 
 class Process
 {
 	public:	
-		//å±æ€§ 
-		int ProID;//è¿›ç¨‹ç¼–å· 
-		int JobId;//è¿›ç¨‹å¯¹åº”ä½œä¸šID 
-		int Priority;//è¿›ç¨‹ä¼˜å…ˆæ•° 
-		int InTimes;//è¿›ç¨‹åˆ›å»ºæ—¶é—´ 
-		int ProState;//è¿›ç¨‹çŠ¶æ€ 
-		int RunTimes;//è¿›ç¨‹è¿è¡Œæ—¶é—´ 
-		int PSW;//ä¿å­˜è¯¥è¿›ç¨‹å½“å‰æ‰§è¡Œçš„æŒ‡ä»¤ç¼–å· 
-		int InstrucNum;//è¿›ç¨‹åŒ…å«çš„æŒ‡ä»¤æ•°ç›® 
-		Instruc *instruc_arry;//è¿›ç¨‹åŒ…å«çš„æŒ‡ä»¤æ•°ç»„æŒ‡é’ˆ 
-		int alltime;//è¿›ç¨‹å‘¨è½¬æ—¶é—´ 
+		//ÊôĞÔ 
+		int ProID;//½ø³Ì±àºÅ 
+		int JobId;//½ø³Ì¶ÔÓ¦×÷ÒµID 
+		int Priority;//½ø³ÌÓÅÏÈÊı 
+		int InTimes;//½ø³Ì´´½¨Ê±¼ä 
+		int ProState;//½ø³Ì×´Ì¬ 
+		int RunTimes;//½ø³ÌÔËĞĞÊ±¼ä 
+		int PSW;//±£´æ¸Ã½ø³Ìµ±Ç°Ö´ĞĞµÄÖ¸Áî±àºÅ 
+		int InstrucNum;//½ø³Ì°üº¬µÄÖ¸ÁîÊıÄ¿ 
+		Instruc *instruc_arry;//½ø³Ì°üº¬µÄÖ¸ÁîÊı×éÖ¸Õë 
+		int alltime;//½ø³ÌÖÜ×ªÊ±¼ä 
 		
-		//æ–¹æ³• 
+		//·½·¨ 
 		Process();
 		Process(int id,int intime,int instrucnum,Time &timeq);
-		void proinit(int m_ID,int m_priority,int m_intimes);//è¿›ç¨‹çš„åˆå§‹åŒ– 
-		int profork(PCB_Table &L,LinkQueue &ready);//è¿›ç¨‹çš„åˆ›å»º 
-		int prokill(PCB_Table &L,LinkQueue &finish);//è¿›ç¨‹çš„ç»ˆæ­¢
-		int problock(PCB_Table &L,LinkQueue &finish,Cpu CPU);//è¿›ç¨‹çš„é˜»å¡
-		int procall(PCB_Table &L,LinkQueue &ready,LinkQueue &block);//è¿›ç¨‹çš„å”¤é†’
-		//int prorun(PCB_Table &L,LinkQueue &ready,LinkQueue &block);//è¿›ç¨‹çš„è¿è¡Œ 
+		void proinit(int m_ID,int m_priority,int m_intimes);//½ø³ÌµÄ³õÊ¼»¯ 
+		int profork(PCB_Table &L,LinkQueue &ready);//½ø³ÌµÄ´´½¨ 
+		int prokill(PCB_Table &L,LinkQueue &finish);//½ø³ÌµÄÖÕÖ¹
+		int problock(PCB_Table &L,LinkQueue &finish,Cpu CPU);//½ø³ÌµÄ×èÈû
+		int procall(PCB_Table &L,LinkQueue &ready,LinkQueue &block);//½ø³ÌµÄ»½ĞÑ
+		//int prorun(PCB_Table &L,LinkQueue &ready,LinkQueue &block);//½ø³ÌµÄÔËĞĞ 
 		
-		//void init_instrucID(); //ä¿®æ­£æŒ‡ä»¤ID 
+		//void init_instrucID(); //ĞŞÕıÖ¸ÁîID 
 				
 	protected:				
 };
 
-//-----------------------------------------PCBè¡¨ç±»----------------------------------------------- 
+//-----------------------------------------PCB±íÀà----------------------------------------------- 
 class PCB_Table
 {
 	public:
-		//å±æ€§ 	
+		//ÊôĞÔ 	
 		Process *process; // 
-		int length;   //è¡¨é•¿ 
+		int length;   //±í³¤ 
 		
-		//æ–¹æ³• 
-		PCB_Table(); //æ„é€ å‡½æ•° 
+		//·½·¨ 
+		PCB_Table(); //¹¹Ôìº¯Êı 
 		
-		void InsertPCB(Process x,int i);//åœ¨PCBè¡¨çš„ç¬¬iä¸ªæ•°æ®å…ƒç´ ä¹‹å‰æ’å…¥ä¸€ä¸ªè¿›ç¨‹x (PCBè¡¨çš„0ä½ç©ºå‡º)
-		void SearchProID(int id,Process &temp);//æ ¹æ®è¿›ç¨‹IDï¼ŒæŸ¥æ‰¾PCBè¡¨ä¸­çš„æŸä¸ªè¿›ç¨‹ ï¼Œè¿”å›ç»™åŒç±»çš„å‚æ•°  
-		void DeleteProID(int id);//æ ¹æ®è¿›ç¨‹IDï¼Œåœ¨PCBè¡¨ä¸­åˆ é™¤ç›¸åº”è¿›ç¨‹ 
-		void PrintTable(char *a);//æ‰“å°è¡¨ 
+		void InsertPCB(Process x,int i);//ÔÚPCB±íµÄµÚi¸öÊı¾İÔªËØÖ®Ç°²åÈëÒ»¸ö½ø³Ìx (PCB±íµÄ0Î»¿Õ³ö)
+		void SearchProID(int id,Process &temp);//¸ù¾İ½ø³ÌID£¬²éÕÒPCB±íÖĞµÄÄ³¸ö½ø³Ì £¬·µ»Ø¸øÍ¬ÀàµÄ²ÎÊı  
+		void DeleteProID(int id);//¸ù¾İ½ø³ÌID£¬ÔÚPCB±íÖĞÉ¾³ıÏàÓ¦½ø³Ì 
+		void PrintTable(char *a);//´òÓ¡±í 
 				
 	protected:
 };
 
 
-//-----------------------------------------é“¾é˜Ÿåˆ—ç±»-------------------------------------------------
-//é“¾é˜Ÿåˆ—ç»“ç‚¹ç±»å‹å®šä¹‰
+//-----------------------------------------Á´¶ÓÁĞÀà-------------------------------------------------
+//Á´¶ÓÁĞ½áµãÀàĞÍ¶¨Òå
 typedef struct QNode  
 {
 	Process data;
@@ -97,19 +97,19 @@ typedef struct QNode
 class LinkQueue
 {
 	public:
-		//å±æ€§		
-		QueuePtr front; //å¤´æŒ‡é’ˆï¼Œdataä¸å­˜æ”¾å…ƒç´ 
-		QueuePtr rear;  //å°¾æŒ‡é’ˆï¼Œdataå­˜æ”¾æœ€åä¸€ä¸ªå…ƒç´ 
+		//ÊôĞÔ		
+		QueuePtr front; //Í·Ö¸Õë£¬data²»´æ·ÅÔªËØ
+		QueuePtr rear;  //Î²Ö¸Õë£¬data´æ·Å×îºóÒ»¸öÔªËØ
 		
-		//æ–¹æ³• 
+		//·½·¨ 
 		LinkQueue();
 
-		void EnQueue(Process e);  //å…¥é˜Ÿåˆ—
-		void DeQueue(Process &e); //å‡ºé˜Ÿåˆ—
-		void GetTop(Process &e);  //å–é˜Ÿåˆ—å¤´å…ƒç´ 
-		void PrintQueue(); //éå†é˜Ÿåˆ—
-		int LenQueue();   //å–é˜Ÿåˆ—é•¿åº¦
-		void MinPriority(Process &e);//æ¯æ¬¡é€‰å–æœ€å°ä¼˜å…ˆçº§çš„è¿›ç¨‹
+		void EnQueue(Process e);  //Èë¶ÓÁĞ
+		void DeQueue(Process &e); //³ö¶ÓÁĞ
+		void GetTop(Process &e);  //È¡¶ÓÁĞÍ·ÔªËØ
+		void PrintQueue(); //±éÀú¶ÓÁĞ
+		int LenQueue();   //È¡¶ÓÁĞ³¤¶È
+		void MinPriority(Process &e);//Ã¿´ÎÑ¡È¡×îĞ¡ÓÅÏÈ¼¶µÄ½ø³Ì
 		void sort();
 		//void DeleteQueue(int v);
 		

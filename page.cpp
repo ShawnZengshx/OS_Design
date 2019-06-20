@@ -1,14 +1,14 @@
 #include "page.h" 
 
-//-----------------------------------------页表项类----------------------------------------------------------
-//构造函数
+//-----------------------------------------ҳ������----------------------------------------------------------
+//���캯��
 Page::Page()
 {
-	PageId = -1;//页号,从0开始依次编号 
-	BlockId = -1;//内存块号，与页面大小相等，从0依此开始编号 
-	Dwell = 0;//驻留标志位，0表示不在内存，1表示在内存
-	Yinyong = 0;//引用位
-	Modifi = 0;//修改位，0表示未被修改，1表示被修改 
+	PageId = -1;//ҳ��,��0��ʼ���α�� 
+	BlockId = -1;//�ڴ��ţ���ҳ���С��ȣ���0���˿�ʼ��� 
+	Dwell = 0;//פ����־λ��0��ʾ�����ڴ棬1��ʾ���ڴ�
+	Yinyong = 0;//����λ
+	Modifi = 0;//�޸�λ��0��ʾδ���޸ģ�1��ʾ���޸� 
 } 
 
 void Page::Init(int id,int dwell)
@@ -16,21 +16,21 @@ void Page::Init(int id,int dwell)
 	PageId = id;
 	Dwell = dwell;
 }
-//------------------------------------------页表类函数实现模块--------------------------------------------------------------------------
-//构造函数 
+//------------------------------------------ҳ���ຯ��ʵ��ģ��--------------------------------------------------------------------------
+//���캯�� 
 Page_Table::Page_Table()
 {
-	page = new Page[25];   //初始化页表空间(初始25) 
-	length = 0;   // PCB中进程个数初始化为0
+	page = new Page[25];   //��ʼ��ҳ���ռ�(��ʼ25) 
+	length = 0;   // PCB�н��̸�����ʼ��Ϊ0
 }
 
-//在Page_Table表的第i个数据元素之前插入一个页表项x (页表的0位空出)
+//��Page_Table���ĵ�i������Ԫ��֮ǰ����һ��ҳ����x (ҳ����0λ�ճ�)
 void Page_Table::InsertPage(Page x,int i)
 {
 	int k;
-	if(i < 1 || i > length + 1)  //判断插入位置是否合法，不合法输出错误提示
+	if(i < 1 || i > length + 1)  //�жϲ���λ���Ƿ�Ϸ������Ϸ����������ʾ
 	{
-		cout<<"插入位置错误！！"<<endl;
+		cout<<"����λ�ô��󣡣�"<<endl;
 	}
 	else
 	{
@@ -43,7 +43,7 @@ void Page_Table::InsertPage(Page x,int i)
 	}
 } 
 
-//根据页号，在P页表中删除相应页表项 
+//����ҳ�ţ���Pҳ����ɾ����Ӧҳ���� 
 void Page_Table::DeletePageId(int id)
 {
 	int i;
@@ -64,11 +64,11 @@ void Page_Table::DeletePageId(int id)
 	}
 	if(flag == 0)
 	{
-		cout<<"页表中没有该页号"<<endl;
+		cout<<"ҳ����û�и�ҳ��"<<endl;
 	}
 } 
 
-//根据页号，查找页表中的某个页表项 ，返回给同类的参数 
+//����ҳ�ţ�����ҳ���е�ĳ��ҳ���� �����ظ�ͬ��Ĳ��� 
 void Page_Table::SearchPageId(int id,Page &temp)
 {
 	int i;
@@ -84,19 +84,19 @@ void Page_Table::SearchPageId(int id,Page &temp)
 	}
 	if(flag == 0)
 	{
-		cout<<"页表中没有页号"<<endl;
+		cout<<"ҳ����û��ҳ��"<<endl;
 	}
 } 
 
 void Page_Table::PrintTable(char *a)
 {
 	ofstream file;
-	file.open(a,ios::trunc); //ios::trunc表示在打开文件前将文件清空
-		//int PageId;//页号,从0开始依次编号 
-	//	int BlockId;//内存块号，与页面大小相等，从0依此开始编号 
-	//	int Dwell;//驻留标志位，0表示不在内存，1表示在内存
-	//	int Yinyong;//引用位
-	//	int Modifi;//修改位，0表示未被修改，1表示被修改 
+	file.open(a,ios::trunc); //ios::trunc��ʾ�ڴ��ļ�ǰ���ļ����
+		//int PageId;//ҳ��,��0��ʼ���α�� 
+	//	int BlockId;//�ڴ��ţ���ҳ���С��ȣ���0���˿�ʼ��� 
+	//	int Dwell;//פ����־λ��0��ʾ�����ڴ棬1��ʾ���ڴ�
+	//	int Yinyong;//����λ
+	//	int Modifi;//�޸�λ��0��ʾδ���޸ģ�1��ʾ���޸� 
 	file<<"PageId"<<setw(15)<<"BlockId"<<setw(15)<<"Dwell"<<setw(15)<<"Yinyong"<<setw(15)<<"Modifi";
 	for(int i = 1;i <= length;i++)
 	{
@@ -106,37 +106,37 @@ void Page_Table::PrintTable(char *a)
 	file.close();
 }
 
-//-----------------------------------------物理块类---------------------------------------------------------
-//构造函数
+//-----------------------------------------��������---------------------------------------------------------
+//���캯��
 Block::Block()
 {
-	BlockId = -1;//物理块ID
-	BlockState = 0;//物理块分配状态（0表示空闲，1表示占有）
-	OwnerPro = -1;//分配给的进程ID 
+	BlockId = -1;//������ID
+	BlockState = 0;//���������״̬��0��ʾ���У�1��ʾռ�У�
+	OwnerPro = -1;//������Ľ���ID 
 } 
 
-//物理块初始化 
+//�������ʼ�� 
 void Block::InitBlock(int id)
 {
 	BlockId = id;
 } 
 
 
-//------------------------------------------Block_Table类函数实现模块--------------------------------------------------------------------------
-//构造函数 
+//------------------------------------------Block_Table�ຯ��ʵ��ģ��--------------------------------------------------------------------------
+//���캯�� 
 Block_Table::Block_Table()
 {
-	block = new Block[200];   //初始化Block_Tabel空间(初始200块) 
-	length = 0;   // PCB中进程个数初始化为0
+	block = new Block[200];   //��ʼ��Block_Tabel�ռ�(��ʼ200��) 
+	length = 0;   // PCB�н��̸�����ʼ��Ϊ0
 }
 
-//在Block_Table表的第i个数据元素之前插入一个Block x (Block_Table表的0位空出)
+//��Block_Table���ĵ�i������Ԫ��֮ǰ����һ��Block x (Block_Table����0λ�ճ�)
 void Block_Table::InsertBlock(Block x,int i)
 {
 	int k;
-	if(i < 1 || i > length + 1)  //判断插入位置是否合法，不合法输出错误提示
+	if(i < 1 || i > length + 1)  //�жϲ���λ���Ƿ�Ϸ������Ϸ����������ʾ
 	{
-		cout<<"插入位置错误！！"<<endl;
+		cout<<"����λ�ô��󣡣�"<<endl;
 	}
 	else
 	{
@@ -149,7 +149,7 @@ void Block_Table::InsertBlock(Block x,int i)
 	}
 } 
 
-//根据物理块ID，在物理块表中删除相应物理块 
+//����������ID�������������ɾ����Ӧ������ 
 void Block_Table::DeleteBlockID(int id)
 {
 	int i;
@@ -170,11 +170,11 @@ void Block_Table::DeleteBlockID(int id)
 	}
 	if(flag == 0)
 	{
-		cout<<"Block_Table表中没有该ID的物理块"<<endl;
+		cout<<"Block_Table����û�и�ID��������"<<endl;
 	}
 } 
 
-//根据物理块ID，查找物理块表中的某个物理块，返回给同类的参数
+//����������ID��������������е�ĳ�������飬���ظ�ͬ��Ĳ���
 void Block_Table::SearchBlockID(int id,Block &temp)
 {
 	int i;
@@ -190,7 +190,7 @@ void Block_Table::SearchBlockID(int id,Block &temp)
 	}
 	if(flag == 0)
 	{
-		cout<<"Block_Table表中没有该ID的物理块"<<endl;
+		cout<<"Block_Table����û�и�ID��������"<<endl;
 	}
 } 
 

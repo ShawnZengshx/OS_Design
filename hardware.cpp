@@ -1,17 +1,17 @@
 #include "hardware.h"
 
 
-//--------------------------------------------------Cpuç±»å‡½æ•°------------------------------------------------------------ 
+//--------------------------------------------------CpuÀàº¯Êı------------------------------------------------------------ 
 
-//æ„é€ å‡½æ•° 
+//¹¹Ôìº¯Êı 
 Cpu::Cpu() 
 {
-	PC = 1;//ç¨‹åºè®¡æ•°å™¨
-	IR = 0;//æŒ‡ä»¤å¯„å­˜å™¨ 
-	PSW = 0;//0ä¸ºç©ºé—²ï¼Œ1ä¸ºå¿™ç¢Œ ,//çŠ¶æ€å¯„å­˜å™¨
+	PC = 1;//³ÌĞò¼ÆÊıÆ÷
+	IR = 0;//Ö¸Áî¼Ä´æÆ÷ 
+	PSW = 0;//0Îª¿ÕÏĞ£¬1ÎªÃ¦Âµ ,//×´Ì¬¼Ä´æÆ÷
 }
 
-//CPUç°åœºä¿æŠ¤å‡½æ•°
+//CPUÏÖ³¡±£»¤º¯Êı
 int Cpu::Sceneprotection(Process &e)
 {
 	e.PSW = IR;
@@ -19,7 +19,7 @@ int Cpu::Sceneprotection(Process &e)
 	return 0;
 }
 
-//CPUç°åœºæ¢å¤å‡½æ•°
+//CPUÏÖ³¡»Ö¸´º¯Êı
 int Cpu::Scenerevover(Process e)
 {
 	PC = e.ProID;
@@ -29,19 +29,19 @@ int Cpu::Scenerevover(Process e)
 }
 
 
-//---------------------------------------------Memoryç±»å‡½æ•°å†…å­˜(ç”¨æˆ·åŒº)------------------------------------------------------------ 
+//---------------------------------------------MemoryÀàº¯ÊıÄÚ´æ(ÓÃ»§Çø)------------------------------------------------------------ 
 
-//æ„é€ å‡½æ•° 
+//¹¹Ôìº¯Êı 
 Memory::Memory()
 {
-	//å†…å­˜åŸºæœ¬ä¿¡æ¯ 
-	SpaceSize = 100*1000;//å•ä½B 
+	//ÄÚ´æ»ù±¾ĞÅÏ¢ 
+	SpaceSize = 100*1000;//µ¥Î»B 
 	BlockNum = 100;
 	BlockSize = 1000;
 	
-	//å†…å­˜ç®¡ç†ä¿¡æ¯
+	//ÄÚ´æ¹ÜÀíĞÅÏ¢
 	Block *temp = new Block[100]; 
-	for(int i = 0; i < 100;i++)//åˆå§‹åŒ–å†…å­˜ç‰©ç†å—è¡¨
+	for(int i = 0; i < 100;i++)//³õÊ¼»¯ÄÚ´æÎïÀí¿é±í
 	{
 		temp[i].InitBlock(i);
 		block_table.InsertBlock(temp[i],i+1);
@@ -50,22 +50,22 @@ Memory::Memory()
 	UsedSpace = 0; 
 }
 
-//åˆ†é…èµ„æº
+//·ÖÅä×ÊÔ´
 /*
-è¿”å›å€¼ï¼š1 â€”â€”>åˆ†é…æˆåŠŸ
-		0 â€”â€”> åˆ†é…å¤±è´¥ 
+·µ»ØÖµ£º1 ¡ª¡ª>·ÖÅä³É¹¦
+		0 ¡ª¡ª> ·ÖÅäÊ§°Ü 
 */ 
 int Memory::AllocationSpace(int size,int JobId,Page_Table &page_table)
 {
-	if((size-5) <= FreeSpace)//å¦‚æœç©ºé—²å—æ•°æ»¡è¶³ï¼Œåˆ™åˆ†é… 
+	if((size-5) <= FreeSpace)//Èç¹û¿ÕÏĞ¿éÊıÂú×ã£¬Ôò·ÖÅä 
 	{
-		//åˆå§‹åŒ–é¡µè¡¨
+		//³õÊ¼»¯Ò³±í
 		for(int k = 0;k < size;k++)
 		{
 			Page page;
 			if(k < size -5)
 			{
-				page.Init(k,1);//é€‰æ‹©ä½œä¸šçš„éƒ¨åˆ†è°ƒå…¥å†…å­˜
+				page.Init(k,1);//Ñ¡Ôñ×÷ÒµµÄ²¿·Öµ÷ÈëÄÚ´æ
 				page_table.InsertPage(page,k+1); 
 			}
 			else
@@ -80,39 +80,39 @@ int Memory::AllocationSpace(int size,int JobId,Page_Table &page_table)
 		size = size -5;
 		while(size > 0)
 		{
-			if(block_table.block[ii].BlockState == 0)//æ‰¾å‡ºç©ºé—²çš„å— 
+			if(block_table.block[ii].BlockState == 0)//ÕÒ³ö¿ÕÏĞµÄ¿é 
 			{
-				block_table.block[ii].BlockState = 1;//ç½®å ç”¨æ ‡å¿— 
-				block_table.block[ii].OwnerPro = JobId;//è¯¥å—åˆ†é…ç»™çš„ä½œä¸š 
-				page_table.page[j].BlockId = block_table.block[ii].BlockId;//æŒ‰æ‰¾åˆ°çš„ä½ç½®å—å·è®¡ç®—å¯¹åº”é¡µæ¡†å·ï¼Œå¡«å…¥è¿›ç¨‹çš„é¡µè¡¨ 
-				FreeSpace--;//ä»ç©ºé—²å—æ•°ä¸­å‡å»æœ¬æ¬¡å ç”¨å—æ•° 
+				block_table.block[ii].BlockState = 1;//ÖÃÕ¼ÓÃ±êÖ¾ 
+				block_table.block[ii].OwnerPro = JobId;//¸Ã¿é·ÖÅä¸øµÄ×÷Òµ 
+				page_table.page[j].BlockId = block_table.block[ii].BlockId;//°´ÕÒµ½µÄÎ»ÖÃ¿éºÅ¼ÆËã¶ÔÓ¦Ò³¿òºÅ£¬ÌîÈë½ø³ÌµÄÒ³±í 
+				FreeSpace--;//´Ó¿ÕÏĞ¿éÊıÖĞ¼õÈ¥±¾´ÎÕ¼ÓÃ¿éÊı 
 				UsedSpace++;
 				size--;
 				j++;
-				//ç›¸åº”çš„é¡µå¯¹åº” 
+				//ÏàÓ¦µÄÒ³¶ÔÓ¦ 
 			}
 			ii++;
 		} 
-		return 1;//åˆ†é…æˆåŠŸ 
+		return 1;//·ÖÅä³É¹¦ 
 	}
-	else//å¦‚æœç©ºé—²å—æ•°ä¸è¶³åˆ™ä»¤è¿›ç¨‹ç­‰å¾… 
+	else//Èç¹û¿ÕÏĞ¿éÊı²»×ãÔòÁî½ø³ÌµÈ´ı 
 	{
-		//è¿›ç¨‹ç­‰å¾… 
-		return 0;//åˆ†é…å¤±è´¥ 
+		//½ø³ÌµÈ´ı 
+		return 0;//·ÖÅäÊ§°Ü 
 	} 
 }
 
-//å›æ”¶èµ„æº 
+//»ØÊÕ×ÊÔ´ 
 int Memory::RecycleSpace(int size,int ProId)
 {
 	int i = 0;
 	while(size > 0)
 	{
-		if(block_table.block[i].OwnerPro == ProId)//æ‰¾å‡ºéœ€è¦å½’è¿˜çš„å— 
+		if(block_table.block[i].OwnerPro == ProId)//ÕÒ³öĞèÒª¹é»¹µÄ¿é 
 		{
-			block_table.block[i].BlockState = 0;//ç½®å ç”¨æ ‡å¿—ä¸º0 
-			block_table.block[i].OwnerPro = -1;//æ¸…ç©ºå æœ‰è¿›ç¨‹æ ‡å¿—ä½ 
-			FreeSpace++;//ä»ç©ºé—²å—æ•°ä¸­å‡å»æœ¬æ¬¡å ç”¨å—æ•° 
+			block_table.block[i].BlockState = 0;//ÖÃÕ¼ÓÃ±êÖ¾Îª0 
+			block_table.block[i].OwnerPro = -1;//Çå¿ÕÕ¼ÓĞ½ø³Ì±êÖ¾Î» 
+			FreeSpace++;//´Ó¿ÕÏĞ¿éÊıÖĞ¼õÈ¥±¾´ÎÕ¼ÓÃ¿éÊı 
 			UsedSpace--;
 			size--;
 		}
@@ -120,11 +120,11 @@ int Memory::RecycleSpace(int size,int ProId)
 	} 
 }
 
-//æ‰“å°å†…å­˜
+//´òÓ¡ÄÚ´æ
 void Memory::Print(ofstream &file)
 {
-	file<<"å‰©ä½™ç©ºé—´ï¼ˆå—ï¼‰ï¼š"<<FreeSpace<<"\r\n"<<"å·²ç”¨ç©ºé—´ï¼ˆå—ï¼‰ï¼š"<<UsedSpace<<"\r\n";
-	file<<"å†…å­˜ç‰©ç†å—æƒ…å†µï¼ˆç¬¬ä¸€ä¸ªæ•°ï¼š0ä¸ºç©ºé—²ï¼Œ1ä¸ºå ç”¨;ç¬¬äºŒä¸ªæ•°ï¼š-1è¡¨ç¤ºæœªåˆ†é…ç»™ä»»ä½•è¿›ç¨‹ï¼Œå…¶ä»–æ•°å­—è¡¨ç¤ºå æœ‰æ”¹å—çš„è¿›ç¨‹IDï¼‰:"<<"\r\n";
+	file<<"Ê£Óà¿Õ¼ä£¨¿é£©£º"<<FreeSpace<<"\r\n"<<"ÒÑÓÃ¿Õ¼ä£¨¿é£©£º"<<UsedSpace<<"\r\n";
+	file<<"ÄÚ´æÎïÀí¿éÇé¿ö£¨µÚÒ»¸öÊı£º0Îª¿ÕÏĞ£¬1ÎªÕ¼ÓÃ;µÚ¶ş¸öÊı£º-1±íÊ¾Î´·ÖÅä¸øÈÎºÎ½ø³Ì£¬ÆäËûÊı×Ö±íÊ¾Õ¼ÓĞ¸Ä¿éµÄ½ø³ÌID£©:"<<"\r\n";
 	for(int i = 1;i <= block_table.length;i++)
 	{
 		file<<block_table.block[i].BlockId<<"("<<block_table.block[i].BlockState<<","<<block_table.block[i].OwnerPro<<")";
@@ -138,9 +138,9 @@ void Memory::Print(ofstream &file)
 } 
 
 
-//--------------------------------------------------MMUç±»å‡½æ•°------------------------------------------------------------ 
+//--------------------------------------------------MMUÀàº¯Êı------------------------------------------------------------ 
 
-//æ„é€ å‡½æ•° 
+//¹¹Ôìº¯Êı 
 MMU::MMU() 
 {
 	page_table_addr = NULL;	
@@ -151,53 +151,53 @@ void MMU::go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &pia
 	
 	PageTableAddr(page_table);
 	BreakAddr(addr,pageid,pianyi);	
-	cout<<"é€»è¾‘åœ°å€åˆ†è§£å®Œæˆ:é¡µå·ä¸º"<<pageid<<",åç§»åœ°å€ä¸º"<<pianyi<<endl; 
-	file<<"é€»è¾‘åœ°å€åˆ†è§£å®Œæˆ:é¡µå·ä¸º"<<pageid<<",åç§»åœ°å€ä¸º"<<pianyi<<endl; 
+	cout<<"Âß¼­µØÖ··Ö½âÍê³É:Ò³ºÅÎª"<<pageid<<",Æ«ÒÆµØÖ·Îª"<<pianyi<<endl; 
+	file<<"Âß¼­µØÖ··Ö½âÍê³É:Ò³ºÅÎª"<<pageid<<",Æ«ÒÆµØÖ·Îª"<<pianyi<<endl; 
 	VisitPageTable(file,pageid,pianyi,paddr);
 }
-//ç®¡ç†é¡µè¡¨åŸºå€å¯„å­˜å™¨ 
-//(å½“è¿›ç¨‹è¢«è°ƒåº¦åˆ°CPUä¸Šè¿è¡Œæ—¶ï¼Œæ“ä½œç³»ç»Ÿè‡ªåŠ¨æŠŠæ­¤è¿›ç¨‹PCBä¸­çš„é¡µè¡¨èµ·å§‹åœ°å€è£…å…¥ç¡¬ä»¶é¡µè¡¨åŸºå€å¯„å­˜å™¨ï¼Œ
-//æ­¤åï¼Œè¿›ç¨‹å¼€å§‹è¿è¡Œå¹¶è®¿é—®æŸä¸ªé€»è¾‘åœ°å€ï¼ŒMMUå¼€å§‹å·¥ä½œ)
+//¹ÜÀíÒ³±í»ùÖ·¼Ä´æÆ÷ 
+//(µ±½ø³Ì±»µ÷¶Èµ½CPUÉÏÔËĞĞÊ±£¬²Ù×÷ÏµÍ³×Ô¶¯°Ñ´Ë½ø³ÌPCBÖĞµÄÒ³±íÆğÊ¼µØÖ·×°ÈëÓ²¼şÒ³±í»ùÖ·¼Ä´æÆ÷£¬
+//´Ëºó£¬½ø³Ì¿ªÊ¼ÔËĞĞ²¢·ÃÎÊÄ³¸öÂß¼­µØÖ·£¬MMU¿ªÊ¼¹¤×÷)
 void MMU::PageTableAddr(Page_Table &page_table)
 {
 	page_table_addr = &page_table;
 }
 
-//åˆ†è§£é€»è¾‘åœ°å€
+//·Ö½âÂß¼­µØÖ·
 void MMU::BreakAddr(int addr,int &pageid,int &pianyi)
 {
 	pageid = addr/1000;
 	pianyi = addr%1000;
 }
 
-//è®¿é—®é¡µè¡¨
+//·ÃÎÊÒ³±í
 void MMU::VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr)
 {
 	Page temp;
-	page_table_addr->SearchPageId(pageid,temp);//é¡µå·ä¸ºç´¢å¼•æœç´¢é¡µè¡¨
-	if(temp.Dwell == 1)//å¦‚æœé¡µè¡¨å‘½ä¸­,å¯é€å‡ºé¡µæ¡†å·ï¼Œå¹¶ä¸é¡µå†…ä½ç§»æ‹¼æ¥æˆç‰©ç†åœ°å€
+	page_table_addr->SearchPageId(pageid,temp);//Ò³ºÅÎªË÷ÒıËÑË÷Ò³±í
+	if(temp.Dwell == 1)//Èç¹ûÒ³±íÃüÖĞ,¿ÉËÍ³öÒ³¿òºÅ£¬²¢ÓëÒ³ÄÚÎ»ÒÆÆ´½Ó³ÉÎïÀíµØÖ·
 	{
 		paddr = temp.BlockId * 1000 + pianyi;
-		cout<<"é¡µè¡¨å‘½ä¸­ï¼Œç‰©ç†åœ°å€ä¸º"<<paddr<<endl;
-		file<<"é¡µè¡¨å‘½ä¸­ï¼Œç‰©ç†åœ°å€ä¸º"<<paddr<<endl;
+		cout<<"Ò³±íÃüÖĞ£¬ÎïÀíµØÖ·Îª"<<paddr<<endl;
+		file<<"Ò³±íÃüÖĞ£¬ÎïÀíµØÖ·Îª"<<paddr<<endl;
 	}
 	else
 	{
-		MissingPage(pageid);//ç¼ºé¡µå¼‚å¸¸ 
-		cout<<"é¡µè¡¨æœªå‘½ä¸­ï¼äº§ç”Ÿç¼ºé¡µä¸­æ–­ï¼"<<endl;
-		cout<<"æ›¿æ¢æˆåŠŸï¼"<<endl;
-		cout<<"é‡æ–°è¿è¡Œä¸­æ–­æŒ‡ä»¤ï¼"<<endl;
-		file<<"é¡µè¡¨æœªå‘½ä¸­ï¼äº§ç”Ÿç¼ºé¡µä¸­æ–­ï¼"<<endl;
-		file<<"æ›¿æ¢æˆåŠŸï¼"<<endl;
-		file<<"ä¸­æ–­æŒ‡ä»¤è¿è¡ŒæˆåŠŸï¼"<<endl;
+		MissingPage(pageid);//È±Ò³Òì³£ 
+		cout<<"Ò³±íÎ´ÃüÖĞ£¡²úÉúÈ±Ò³ÖĞ¶Ï£¡"<<endl;
+		cout<<"Ìæ»»³É¹¦£¡"<<endl;
+		cout<<"ÖØĞÂÔËĞĞÖĞ¶ÏÖ¸Áî£¡"<<endl;
+		file<<"Ò³±íÎ´ÃüÖĞ£¡²úÉúÈ±Ò³ÖĞ¶Ï£¡"<<endl;
+		file<<"Ìæ»»³É¹¦£¡"<<endl;
+		file<<"ÖĞ¶ÏÖ¸ÁîÔËĞĞ³É¹¦£¡"<<endl;
 	}
 }
 
-//å‘å‡ºå¼‚å¸¸
+//·¢³öÒì³£
 void MMU::MissingPage(int id)
 {
-	//page_table_addr->SearchPageId(id,temp);//æ ¹æ®é¡µå·ï¼Œæœç´¢å¤–é¡µå· 
-	page_table_addr->page[id].Dwell = 1;//è°ƒå…¥å†…å­˜ 
+	//page_table_addr->SearchPageId(id,temp);//¸ù¾İÒ³ºÅ£¬ËÑË÷ÍâÒ³ºÅ 
+	page_table_addr->page[id].Dwell = 1;//µ÷ÈëÄÚ´æ 
 	page_table_addr->page[id].BlockId = id*987%100;
 }
 

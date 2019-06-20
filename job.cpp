@@ -1,61 +1,61 @@
 #include "job.h"
 
 /*
------------------------------------JCBç±»-----------------------------------------
+-----------------------------------JCBÀà-----------------------------------------
 */
 
-//æ„é€ å‡½æ•°
+//¹¹Ôìº¯Êı
 JCB::JCB()
 {
-	strcpy(UserName,"zhangying");//ç”¨æˆ·å,é»˜è®¤ä¸ºzhangying 
-	JobId = 0;//ä½œä¸šå·
+	strcpy(UserName,"zhangying");//ÓÃ»§Ãû,Ä¬ÈÏÎªzhangying 
+	JobId = 0;//×÷ÒµºÅ
 	
-	//èµ„æºéœ€æ±‚ 
-	RunTime = 0;//CPUè¿è¡Œä¼°è®¡æ—¶é—´
-	DeadLine = 0;//æˆªæ­¢æ—¶é—´
-	MemorySize = 0;//æ‰€éœ€å†…å­˜å®¹é‡
+	//×ÊÔ´ĞèÇó 
+	RunTime = 0;//CPUÔËĞĞ¹À¼ÆÊ±¼ä
+	DeadLine = 0;//½ØÖ¹Ê±¼ä
+	MemorySize = 0;//ËùĞèÄÚ´æÈİÁ¿
 	
-	//èµ„æºä½¿ç”¨æƒ…å†µ 
-	InTime = 0;//è¿›å…¥ç³»ç»Ÿæ—¶é—´
-	StarTime = 0;//å¼€å§‹è¿è¡Œæ—¶é—´
-	MemoryAddress = 0;//å†…å­˜åœ°å€ 
+	//×ÊÔ´Ê¹ÓÃÇé¿ö 
+	InTime = 0;//½øÈëÏµÍ³Ê±¼ä
+	StarTime = 0;//¿ªÊ¼ÔËĞĞÊ±¼ä
+	MemoryAddress = 0;//ÄÚ´æµØÖ· 
 	
-	ProId = 0;//ä½œä¸šå¯¹åº”è¿›ç¨‹ 
+	ProId = 0;//×÷Òµ¶ÔÓ¦½ø³Ì 
 	
 }
 
-//åˆå§‹åŒ–å‡½æ•° 
+//³õÊ¼»¯º¯Êı 
 void JCB::Init(int jobid,int intime,int memorysize)
 {
-	JobId = jobid;//ä½œä¸šå·
+	JobId = jobid;//×÷ÒµºÅ
 	
-	//èµ„æºéœ€æ±‚ 
-	MemorySize = memorysize;//æ‰€éœ€å†…å­˜å®¹é‡
+	//×ÊÔ´ĞèÇó 
+	MemorySize = memorysize;//ËùĞèÄÚ´æÈİÁ¿
 	
-	//èµ„æºä½¿ç”¨æƒ…å†µ 
-	InTime = intime;//è¿›å…¥ç³»ç»Ÿæ—¶é—´
-	//MemoryAddress = memoryaddress;//å†…å­˜åœ°å€
-	cout<<"æœ‰æ–°çš„ä½œä¸šè¿›å…¥ç³»ç»Ÿ.."<<endl; 
-	cout<<"å·²ä¸ºæ–°ä½œä¸šå»ºç«‹ä½œä¸šæ§åˆ¶å—ï¼Œä½œä¸šIDä¸ºï¼š"<<jobid<<endl; 
+	//×ÊÔ´Ê¹ÓÃÇé¿ö 
+	InTime = intime;//½øÈëÏµÍ³Ê±¼ä
+	//MemoryAddress = memoryaddress;//ÄÚ´æµØÖ·
+	cout<<"ÓĞĞÂµÄ×÷Òµ½øÈëÏµÍ³.."<<endl; 
+	cout<<"ÒÑÎªĞÂ×÷Òµ½¨Á¢×÷Òµ¿ØÖÆ¿é£¬×÷ÒµIDÎª£º"<<jobid<<endl; 
 } 
 
 /*
------------------------------------JCB_Tableç±»-----------------------------------------
+-----------------------------------JCB_TableÀà-----------------------------------------
 */
 
-//æ„é€ å‡½æ•°
+//¹¹Ôìº¯Êı
 JCB_Table::JCB_Table()
 {
-	jcb = new JCB[20];   //åˆ†é…åˆå§‹åŒ–ä½œä¸šè¡¨ç©ºé—´ 
-	length = 0;   // JCBè¡¨ä¸­ä½œä¸šä¸ªæ•°åˆå§‹åŒ–ä¸º0
+	jcb = new JCB[20];   //·ÖÅä³õÊ¼»¯×÷Òµ±í¿Õ¼ä 
+	length = 0;   // JCB±íÖĞ×÷Òµ¸öÊı³õÊ¼»¯Îª0
 } 
 
 void JCB_Table::InsertJCB(JCB x,int i)
 {
 	int k;
-	if(i < 1 || i > length + 1)  //åˆ¤æ–­æ’å…¥ä½ç½®æ˜¯å¦åˆæ³•ï¼Œä¸åˆæ³•è¾“å‡ºé”™è¯¯æç¤º
+	if(i < 1 || i > length + 1)  //ÅĞ¶Ï²åÈëÎ»ÖÃÊÇ·ñºÏ·¨£¬²»ºÏ·¨Êä³ö´íÎóÌáÊ¾
 	{
-		cout<<"æ’å…¥ä½ç½®é”™è¯¯ï¼ï¼"<<endl;
+		cout<<"²åÈëÎ»ÖÃ´íÎó£¡£¡"<<endl;
 	}
 	else
 	{
@@ -66,10 +66,10 @@ void JCB_Table::InsertJCB(JCB x,int i)
 		}	
 		jcb[k+1] = x;
 	}
-	cout<<"ä½œä¸šIDä¸º"<<x.JobId<<"çš„ä½œä¸šå·²æ·»å…¥ä½œä¸šè¡¨ï¼"<<endl; 
+	cout<<"×÷ÒµIDÎª"<<x.JobId<<"µÄ×÷ÒµÒÑÌíÈë×÷Òµ±í£¡"<<endl; 
 }
 
-//æ ¹æ®ä½œä¸šå·ï¼ŒæŸ¥æ‰¾JCBè¡¨ä¸­çš„æŸä¸ªä½œä¸šï¼Œè¿”å›ç»™åŒç±»çš„å‚æ•°  
+//¸ù¾İ×÷ÒµºÅ£¬²éÕÒJCB±íÖĞµÄÄ³¸ö×÷Òµ£¬·µ»Ø¸øÍ¬ÀàµÄ²ÎÊı  
 void JCB_Table::SearchJobId(int id,JCB &temp)
 {
 	int i;
@@ -85,11 +85,11 @@ void JCB_Table::SearchJobId(int id,JCB &temp)
 	}
 	if(flag == 0)
 	{
-		cout<<"JCBè¡¨ä¸­æ²¡æœ‰è¯¥IDçš„è¿›ç¨‹"<<endl;
+		cout<<"JCB±íÖĞÃ»ÓĞ¸ÃIDµÄ½ø³Ì"<<endl;
 	}
 }
 
-//æ ¹æ®ä½œä¸šå·ï¼Œåœ¨JCBè¡¨ä¸­åˆ é™¤ç›¸åº”JCB
+//¸ù¾İ×÷ÒµºÅ£¬ÔÚJCB±íÖĞÉ¾³ıÏàÓ¦JCB
 void JCB_Table::DeleteJobId(int id)
 {
 	int i;
@@ -110,20 +110,20 @@ void JCB_Table::DeleteJobId(int id)
 	}
 	if(flag == 0)
 	{
-		cout<<"JCBè¡¨ä¸­æ²¡æœ‰è¯¥IDçš„ä½œä¸š"<<endl;
+		cout<<"JCB±íÖĞÃ»ÓĞ¸ÃIDµÄ×÷Òµ"<<endl;
 	}
 }
 
-//æ‰“å°ä½œä¸šè¡¨ 
+//´òÓ¡×÷Òµ±í 
 void JCB_Table::PrintTable(ofstream &file)
 {
 	//ofstream file;
-	//file.open(a,ios::trunc); //ios::truncè¡¨ç¤ºåœ¨æ‰“å¼€æ–‡ä»¶å‰å°†æ–‡ä»¶æ¸…ç©º
-	//char UserName[10];//ç”¨æˆ·å,é»˜è®¤ä¸ºzhangying //èµ„æºéœ€æ±‚ //int RunTime;//CPUè¿è¡Œä¼°è®¡æ—¶é—´//int DeadLine;//æˆªæ­¢æ—¶é—´
-	//int MemorySize;//æ‰€éœ€å†…å­˜å®¹é‡(ä»¥é¡µä¸ºå•ä½ï¼Œ10â€”â€”20é¡µ)//èµ„æºä½¿ç”¨æƒ…å†µ //int InTime;//è¿›å…¥ç³»ç»Ÿæ—¶é—´	//int StarTime;//å¼€å§‹è¿è¡Œæ—¶é—´
-	//int MemoryAddress;//å†…å­˜åœ°å€ //int ProId;//ä½œä¸šå¯¹åº”è¿›ç¨‹ 
-	file<<"ä½œä¸šå·"<<setw(15)<<"ç”¨æˆ·å"<<setw(20)<<"è¿›ç¨‹å·"<<setw(15)<<"ä¼°è®¡æ—¶é—´"<<setw(20)<<"æˆªæ­¢æ—¶é—´"<<setw(20)<<"æ‰€éœ€å†…å­˜"
-			<<setw(20)<<"è¿›å…¥ç³»ç»Ÿæ—¶é—´"<<setw(20)<<"å¼€å§‹è¿è¡Œæ—¶é—´"<<setw(20)<<"å†…å­˜åœ°å€"<<endl;
+	//file.open(a,ios::trunc); //ios::trunc±íÊ¾ÔÚ´ò¿ªÎÄ¼şÇ°½«ÎÄ¼şÇå¿Õ
+	//char UserName[10];//ÓÃ»§Ãû,Ä¬ÈÏÎªzhangying //×ÊÔ´ĞèÇó //int RunTime;//CPUÔËĞĞ¹À¼ÆÊ±¼ä//int DeadLine;//½ØÖ¹Ê±¼ä
+	//int MemorySize;//ËùĞèÄÚ´æÈİÁ¿(ÒÔÒ³Îªµ¥Î»£¬10¡ª¡ª20Ò³)//×ÊÔ´Ê¹ÓÃÇé¿ö //int InTime;//½øÈëÏµÍ³Ê±¼ä	//int StarTime;//¿ªÊ¼ÔËĞĞÊ±¼ä
+	//int MemoryAddress;//ÄÚ´æµØÖ· //int ProId;//×÷Òµ¶ÔÓ¦½ø³Ì 
+	file<<"×÷ÒµºÅ"<<setw(15)<<"ÓÃ»§Ãû"<<setw(20)<<"½ø³ÌºÅ"<<setw(15)<<"¹À¼ÆÊ±¼ä"<<setw(20)<<"½ØÖ¹Ê±¼ä"<<setw(20)<<"ËùĞèÄÚ´æ"
+			<<setw(20)<<"½øÈëÏµÍ³Ê±¼ä"<<setw(20)<<"¿ªÊ¼ÔËĞĞÊ±¼ä"<<setw(20)<<"ÄÚ´æµØÖ·"<<endl;
 	for(int i = 1;i <= length;i++)
 	{
 		file<<jcb[i].JobId<<setw(15)<<jcb[i].UserName<<setw(20)<<jcb[i].ProId<<setw(15)<<jcb[i].RunTime<<setw(20)<<jcb[i].DeadLine<<setw(20)<<jcb[i].MemorySize
@@ -134,19 +134,19 @@ void JCB_Table::PrintTable(ofstream &file)
 } 
 
 /*
------------------------------------Pool_Queue(åå¤‡é˜Ÿåˆ—)ç±»-----------------------------------------
+-----------------------------------Pool_Queue(ºó±¸¶ÓÁĞ)Àà-----------------------------------------
 */
   
-//æ„é€ å‡½æ•°
+//¹¹Ôìº¯Êı
 Pool_Queue::Pool_Queue()
 {
-	rear = new QNode_J;  //ä¸ºé˜Ÿåˆ—çš„å¤´å°¾ç»“ç‚¹åˆ†é…ç©ºé—´
+	rear = new QNode_J;  //Îª¶ÓÁĞµÄÍ·Î²½áµã·ÖÅä¿Õ¼ä
 	front = rear;
 	if (!front )  return ;
 	front->next = NULL;
 }
 
-//å…¥é˜Ÿåˆ—
+//Èë¶ÓÁĞ
 void Pool_Queue::EnQueue(JCB e)
 {
 	QueuePtr_J p;
@@ -156,32 +156,32 @@ void Pool_Queue::EnQueue(JCB e)
 	p->next = NULL;
 	rear->next = p;
 	rear = p;
-	cout<<"ä½œä¸šIDä¸º"<<e.JobId<<"çš„ä½œä¸š"<<"å·²ç§»å…¥åå¤‡é˜Ÿåˆ—ï¼"<<endl;
+	cout<<"×÷ÒµIDÎª"<<e.JobId<<"µÄ×÷Òµ"<<"ÒÑÒÆÈëºó±¸¶ÓÁĞ£¡"<<endl;
 }
 
-//å‡ºé˜Ÿåˆ—
+//³ö¶ÓÁĞ
 void Pool_Queue::DeQueue(JCB &e)
 {
 	if(front == rear)
 	{
-		//cout<<"è¯¥é˜Ÿåˆ—ä¸ºç©ºé˜Ÿåˆ—"<<endl;
+		//cout<<"¸Ã¶ÓÁĞÎª¿Õ¶ÓÁĞ"<<endl;
 		return ;
 	}
 	QueuePtr_J p;
 	p = front ->next ;
 	e = p->data ;
-	//printf("å‡ºé˜Ÿåˆ—å®Œæˆï¼Œè¢«åˆ é™¤çš„å…ƒç´ ä¸º%d\n",e);
+	//printf("³ö¶ÓÁĞÍê³É£¬±»É¾³ıµÄÔªËØÎª%d\n",e);
 	front ->next = p->next ;
-	if (rear == p ) rear = front ; //å¦‚æœé“¾é˜Ÿåˆ—åŸæœ¬åªæœ‰ä¸€ä¸ªå…ƒç´ ï¼Œè¦åŒæ—¶ä¿®æ”¹é˜Ÿå°¾æŒ‡é’ˆ
+	if (rear == p ) rear = front ; //Èç¹ûÁ´¶ÓÁĞÔ­±¾Ö»ÓĞÒ»¸öÔªËØ£¬ÒªÍ¬Ê±ĞŞ¸Ä¶ÓÎ²Ö¸Õë
 	delete p;
 }
 
-//å–é˜Ÿåˆ—å¤´å…ƒç´ 
+//È¡¶ÓÁĞÍ·ÔªËØ
 void Pool_Queue::GetTop(JCB &e)
 {
 	if (rear ==  front ) 
 	{
-		//cout<<"è¯¥é˜Ÿåˆ—ä¸ºç©ºé˜Ÿåˆ—"<<endl;
+		//cout<<"¸Ã¶ÓÁĞÎª¿Õ¶ÓÁĞ"<<endl;
 		return ;
 	}
 	QueuePtr_J p;
@@ -189,18 +189,18 @@ void Pool_Queue::GetTop(JCB &e)
 	e = p->data;
 }
 
-//éå†é˜Ÿåˆ—
+//±éÀú¶ÓÁĞ
 void Pool_Queue::PrintQueue()
 {
 	if (front == rear)
 	{
-		//cout<<"è¯¥é˜Ÿåˆ—ä¸ºç©ºé˜Ÿåˆ—"<<endl;
+		//cout<<"¸Ã¶ÓÁĞÎª¿Õ¶ÓÁĞ"<<endl;
 		return;
 	}
 	
 	QueuePtr_J p;
 	p = front->next ;
-	cout<<"è¯¥é˜Ÿåˆ—ä¸­çš„ä½œä¸šIDå¦‚ä¸‹ï¼š";
+	cout<<"¸Ã¶ÓÁĞÖĞµÄ×÷ÒµIDÈçÏÂ£º";
 	while(p)
 	{
 		cout<<p->data.JobId<<",";
@@ -209,12 +209,12 @@ void Pool_Queue::PrintQueue()
 	cout<<endl;
 }
 
-//å–é˜Ÿåˆ—é•¿åº¦
+//È¡¶ÓÁĞ³¤¶È
 int Pool_Queue::LenQueue()
 {
 	if (front == rear )
 	{
-		//cout<<"è¯¥é˜Ÿåˆ—ä¸ºç©º"<<endl;
+		//cout<<"¸Ã¶ÓÁĞÎª¿Õ"<<endl;
 		return 0; 
 	}
 	int i=0;
@@ -229,30 +229,30 @@ int Pool_Queue::LenQueue()
 }
 	
 /*
------------------------------------Job_Scheduler(ä½œä¸šè°ƒåº¦ç¨‹åºï¼‰ç±»-----------------------------------------
+-----------------------------------Job_Scheduler(×÷Òµµ÷¶È³ÌĞò£©Àà-----------------------------------------
 */
-//æ„é€ å‡½æ•°	
+//¹¹Ôìº¯Êı	
 Job_Scheduler::Job_Scheduler()
 {
 	
 }
 /*
-2ã€æ‰¹å¤„ç†ä½œä¸šçš„è°ƒåº¦ï¼›ä½œä¸šè°ƒåº¦ç¨‹åºéœ€å®Œæˆä»¥ä¸‹ä»»åŠ¡ï¼š
-	a.é€‰æ‹©ä½œä¸šã€‚å…ˆæ¥å…ˆæœåŠ¡ç®—æ³•
-	b.åˆ†é…èµ„æºã€‚ä½œä¸šè°ƒåº¦ç¨‹åºä¸å­˜å‚¨ç®¡ç†ç¨‹åºè¿›è¡Œé€šè®¯ï¼Œä¸ºä½œä¸šåˆ†é…æ‰€éœ€çš„èµ„æºã€‚
-	c.åˆ›å»ºè¿›ç¨‹ã€‚æ¯å½“é€‰ä¸­ä½œä¸šä¸”å°†å…¶è£…å…¥å†…å­˜æ—¶ï¼Œç³»ç»Ÿå°±ä¸ºæ­¤ä½œä¸šåˆ›å»ºåº”ç”¨è¿›ç¨‹ï¼Œç”ŸæˆPCBåŠå¯¹åº”è¿›ç¨‹å®ä½“ï¼Œè¿™äº›è¿›ç¨‹å°†åœ¨ä½çº§è°ƒåº¦æ§åˆ¶ä¸‹å ç”¨å¤„ç†å™¨è¿è¡Œã€‚ï¼ˆå¯åŒæ—¶è£…å…¥å¤šä¸ªä½œä¸šå¹¶å¯åŠ¨è¿è¡Œï¼‰
-	d.åç»­å¤„ç†ã€‚ä½œä¸šæ­£å¸¸ç»“æŸæˆ–å‡ºé”™ç»ˆæ­¢æ—¶ï¼Œä½œä¸šè°ƒåº¦ç¨‹åºè¦åšå¥½ä½œä¸šæ’¤ç¦»å’Œå®Œå–„å·¥ä½œï¼Œå¦‚æ‰“å°è¾“å‡ºä¿¡æ¯ã€å›æ”¶å„ç§èµ„æºã€æ’¤é”€JCBç­‰ï¼›åŒæ—¶ï¼Œå¯åŠ¨ä½œä¸šè°ƒåº¦ç¨‹åºé€‰æ‹©æ–°ä½œä¸šè¿›å…¥å†…å­˜ï¼›
+2¡¢Åú´¦Àí×÷ÒµµÄµ÷¶È£»×÷Òµµ÷¶È³ÌĞòĞèÍê³ÉÒÔÏÂÈÎÎñ£º
+	a.Ñ¡Ôñ×÷Òµ¡£ÏÈÀ´ÏÈ·şÎñËã·¨
+	b.·ÖÅä×ÊÔ´¡£×÷Òµµ÷¶È³ÌĞòÓë´æ´¢¹ÜÀí³ÌĞò½øĞĞÍ¨Ñ¶£¬Îª×÷Òµ·ÖÅäËùĞèµÄ×ÊÔ´¡£
+	c.´´½¨½ø³Ì¡£Ã¿µ±Ñ¡ÖĞ×÷ÒµÇÒ½«Æä×°ÈëÄÚ´æÊ±£¬ÏµÍ³¾ÍÎª´Ë×÷Òµ´´½¨Ó¦ÓÃ½ø³Ì£¬Éú³ÉPCB¼°¶ÔÓ¦½ø³ÌÊµÌå£¬ÕâĞ©½ø³Ì½«ÔÚµÍ¼¶µ÷¶È¿ØÖÆÏÂÕ¼ÓÃ´¦ÀíÆ÷ÔËĞĞ¡££¨¿ÉÍ¬Ê±×°Èë¶à¸ö×÷Òµ²¢Æô¶¯ÔËĞĞ£©
+	d.ºóĞø´¦Àí¡£×÷ÒµÕı³£½áÊø»ò³ö´íÖÕÖ¹Ê±£¬×÷Òµµ÷¶È³ÌĞòÒª×öºÃ×÷Òµ³·ÀëºÍÍêÉÆ¹¤×÷£¬Èç´òÓ¡Êä³öĞÅÏ¢¡¢»ØÊÕ¸÷ÖÖ×ÊÔ´¡¢³·ÏúJCBµÈ£»Í¬Ê±£¬Æô¶¯×÷Òµµ÷¶È³ÌĞòÑ¡ÔñĞÂ×÷Òµ½øÈëÄÚ´æ£»
 */
 
 
 int Job_Scheduler::go(Pool_Queue &pool_queue,JCB &temp,Memory &memory,Page_Table &page_table,Time &timeq,PCB_Table &pcb_table,LinkQueue &ready,JCB_Table &jcb_table)
 {
-	ChooseJob(pool_queue,temp);//a.é€‰æ‹©ä½œä¸šã€‚
+	ChooseJob(pool_queue,temp);//a.Ñ¡Ôñ×÷Òµ¡£
 	
-	int i = AllocatinResource(memory,temp,page_table,pool_queue,jcb_table);//	b.åˆ†é…èµ„æºã€‚
+	int i = AllocatinResource(memory,temp,page_table,pool_queue,jcb_table);//	b.·ÖÅä×ÊÔ´¡£
 	if(i == 1)
 	{
-		Job_Scheduler::CreateProcees(temp,timeq,pcb_table,ready);//c.åˆ›å»ºè¿›ç¨‹ã€‚
+		Job_Scheduler::CreateProcees(temp,timeq,pcb_table,ready);//c.´´½¨½ø³Ì¡£
 		return 1;
 	}
 	else
@@ -263,37 +263,37 @@ int Job_Scheduler::go(Pool_Queue &pool_queue,JCB &temp,Memory &memory,Page_Table
 	
 }
 
-//é€‰æ‹©ä½œä¸š(å…ˆæ¥å…ˆæœåŠ¡ç®—æ³•),ä»åå¤‡é˜Ÿåˆ—ä¸­å–å‡ºä¸€ä¸ªJCBç»™temp 
+//Ñ¡Ôñ×÷Òµ(ÏÈÀ´ÏÈ·şÎñËã·¨),´Óºó±¸¶ÓÁĞÖĞÈ¡³öÒ»¸öJCB¸øtemp 
 void Job_Scheduler::ChooseJob(Pool_Queue &pool_queue,JCB &temp)
 {
 	if(pool_queue.front == pool_queue.rear)
 	{
-		cout<<"åå¤‡é˜Ÿåˆ—ä¸ºç©ºé˜Ÿåˆ—ï¼"<<endl;
+		cout<<"ºó±¸¶ÓÁĞÎª¿Õ¶ÓÁĞ£¡"<<endl;
 	}
 	else
 	{
-		pool_queue.GetTop(temp);//ä»åå¤‡é˜Ÿåˆ—ä¸­é€‰æ‹©ä¸€ä¸ªä½œä¸šè°ƒå…¥å†…å­˜
-		cout<<"ä½œä¸šå·ä¸ºï¼š"<<temp.JobId<<"çš„ä½œä¸šå·²è°ƒå…¥å†…å­˜ï¼"<<endl; 
+		pool_queue.GetTop(temp);//´Óºó±¸¶ÓÁĞÖĞÑ¡ÔñÒ»¸ö×÷Òµµ÷ÈëÄÚ´æ
+		cout<<"×÷ÒµºÅÎª£º"<<temp.JobId<<"µÄ×÷ÒµÒÑµ÷ÈëÄÚ´æ£¡"<<endl; 
 	}
 	
 }
 
-//åˆ†é…èµ„æºï¼ˆä½œä¸šè°ƒåº¦ç¨‹åºä¸å­˜å‚¨ç®¡ç†ç¨‹åºè¿›è¡Œé€šè®¯ï¼Œä¸ºä½œä¸šåˆ†é…æ‰€éœ€çš„èµ„æºã€‚ï¼‰ 
+//·ÖÅä×ÊÔ´£¨×÷Òµµ÷¶È³ÌĞòÓë´æ´¢¹ÜÀí³ÌĞò½øĞĞÍ¨Ñ¶£¬Îª×÷Òµ·ÖÅäËùĞèµÄ×ÊÔ´¡££© 
 int Job_Scheduler::AllocatinResource(Memory &memory,JCB jcb,Page_Table &page_table,Pool_Queue &pool_queue,JCB_Table &jcb_table)
 {
 	int i = memory.AllocationSpace(jcb.MemorySize,jcb.JobId,page_table);
 	if(i == 1)
 	{
-		cout<<"å·²ä¸ºä½œä¸š"<<jcb.JobId<<"åˆ†é…æ‰€éœ€å†…å­˜èµ„æº!"<<endl;
+		cout<<"ÒÑÎª×÷Òµ"<<jcb.JobId<<"·ÖÅäËùĞèÄÚ´æ×ÊÔ´!"<<endl;
 		pool_queue.DeQueue(jcb);
-		jcb_table.jcb[jcb.JobId].ProId = jcb.JobId;//æ”¹å˜JCBè¡¨ä¸­ç›¸å…³ä¿¡æ¯ 
+		jcb_table.jcb[jcb.JobId].ProId = jcb.JobId;//¸Ä±äJCB±íÖĞÏà¹ØĞÅÏ¢ 
 		jcb_table.jcb[jcb.JobId].StarTime = jcb_table.jcb[jcb.JobId].InTime + 10;
 		return 1;
 	}
 	else
 	{
-		cout<<"ä½œä¸š"<<jcb.JobId<<"æ­£åœ¨å›æ»š!"<<endl;
-		cout<<"å†…å­˜åˆ†é…å·²æ»¡ï¼Œè¯·ç­‰å¾…ï¼"<<endl;
+		cout<<"×÷Òµ"<<jcb.JobId<<"ÕıÔÚ»Ø¹ö!"<<endl;
+		cout<<"ÄÚ´æ·ÖÅäÒÑÂú£¬ÇëµÈ´ı£¡"<<endl;
 		cout<<endl;
 		return 0;
 	}
@@ -301,16 +301,16 @@ int Job_Scheduler::AllocatinResource(Memory &memory,JCB jcb,Page_Table &page_tab
 	
 }
 
-//åˆ›å»ºè¿›ç¨‹(æ¯å½“é€‰ä¸­ä½œä¸šä¸”å°†å…¶è£…å…¥å†…å­˜æ—¶ï¼Œç³»ç»Ÿå°±ä¸ºæ­¤ä½œä¸šåˆ›å»ºåº”ç”¨è¿›ç¨‹ï¼Œç”ŸæˆPCBåŠå¯¹åº”è¿›ç¨‹å®ä½“ï¼Œè¿™äº›è¿›ç¨‹å°†åœ¨ä½çº§è°ƒåº¦æ§åˆ¶ä¸‹å ç”¨å¤„ç†å™¨è¿è¡Œã€‚)
+//´´½¨½ø³Ì(Ã¿µ±Ñ¡ÖĞ×÷ÒµÇÒ½«Æä×°ÈëÄÚ´æÊ±£¬ÏµÍ³¾ÍÎª´Ë×÷Òµ´´½¨Ó¦ÓÃ½ø³Ì£¬Éú³ÉPCB¼°¶ÔÓ¦½ø³ÌÊµÌå£¬ÕâĞ©½ø³Ì½«ÔÚµÍ¼¶µ÷¶È¿ØÖÆÏÂÕ¼ÓÃ´¦ÀíÆ÷ÔËĞĞ¡£)
 int Job_Scheduler::CreateProcees(JCB temp,Time &timeq,PCB_Table &pcb_table,LinkQueue &ready)
 {
-	cout<<"å·²ä¸ºä½œä¸š"<<temp.JobId<<"åˆ›å»ºå¯¹åº”è¿›ç¨‹"<<temp.JobId<<"ä»¥åŠç›¸åº”é¡µè¡¨!"<<endl;
-	Process process(temp.JobId,temp.StarTime+10,temp.MemorySize,timeq);//ä¸ºæ­¤ä½œä¸šåˆ›å»ºåº”ç”¨è¿›ç¨‹ï¼Œç”ŸæˆPCB 
-	process.profork(pcb_table,ready);//è¿›ç¨‹ç§»å…¥å°±ç»ªé˜Ÿåˆ—å’ŒPCBè¡¨ç­‰å¾…ä½çº§è°ƒåº¦ 
+	cout<<"ÒÑÎª×÷Òµ"<<temp.JobId<<"´´½¨¶ÔÓ¦½ø³Ì"<<temp.JobId<<"ÒÔ¼°ÏàÓ¦Ò³±í!"<<endl;
+	Process process(temp.JobId,temp.StarTime+10,temp.MemorySize,timeq);//Îª´Ë×÷Òµ´´½¨Ó¦ÓÃ½ø³Ì£¬Éú³ÉPCB 
+	process.profork(pcb_table,ready);//½ø³ÌÒÆÈë¾ÍĞ÷¶ÓÁĞºÍPCB±íµÈ´ıµÍ¼¶µ÷¶È 
 	return 0;
 }
 
-//åç»­å¤„ç†
+//ºóĞø´¦Àí
 int Job_Scheduler::FollowWork()
 {
 	return 0;

@@ -1,26 +1,26 @@
 #ifndef HARDWARE_H
 #define HARDWARE_H
 
-//ç›¸å…³å¤´æ–‡ä»¶å£°æ˜ 
+//Ïà¹ØÍ·ÎÄ¼şÉùÃ÷ 
 #include "utils.h"
 #include "process.h"
 #include "page.h" 
 
-//process.hå¤´æ–‡ä»¶ä¸­ç›¸å…³ç±»å£°æ˜ 
+//process.hÍ·ÎÄ¼şÖĞÏà¹ØÀàÉùÃ÷ 
 class Instruc; 
 class PCB_Table;
 class LinkQueue;
 class Process;
 
-//page.hå¤´æ–‡ä»¶ç›¸å…³ç±»å£°æ˜ 
-class Block;//ç‰©ç†å—
-class Block_Table;//ç‰©ç†å—è¡¨ 
-class Page;//é¡µè¡¨é¡¹
-class Page_Table;//é¡µè¡¨ 
+//page.hÍ·ÎÄ¼şÏà¹ØÀàÉùÃ÷ 
+class Block;//ÎïÀí¿é
+class Block_Table;//ÎïÀí¿é±í 
+class Page;//Ò³±íÏî
+class Page_Table;//Ò³±í 
 
-//hardware.hç›¸å…³ç±»å£°æ˜ 
+//hardware.hÏà¹ØÀàÉùÃ÷ 
 class Cpu;//cpu
-class Memory;//å†…å­˜
+class Memory;//ÄÚ´æ
 class Time;
 class MMU;
 
@@ -29,39 +29,39 @@ class MMU;
 class Cpu
 {
 	public:
-		//å±æ€§ 
-		int PC;   //ç¨‹åºè®¡æ•°å™¨ 
-		int IR;   //æŒ‡ä»¤å¯„å­˜å™¨ 
-		int PSW;  //çŠ¶æ€å¯„å­˜å™¨
+		//ÊôĞÔ 
+		int PC;   //³ÌĞò¼ÆÊıÆ÷ 
+		int IR;   //Ö¸Áî¼Ä´æÆ÷ 
+		int PSW;  //×´Ì¬¼Ä´æÆ÷
 		
-		//æ–¹æ³• 
-		Cpu();    //æ„é€ å‡½æ•° 
-		int Sceneprotection(Process &e);//CPUç°åœºä¿æŠ¤å‡½æ•°
-		int Scenerevover(Process e);//CPUç°åœºæ¢å¤å‡½æ•° 
+		//·½·¨ 
+		Cpu();    //¹¹Ôìº¯Êı 
+		int Sceneprotection(Process &e);//CPUÏÖ³¡±£»¤º¯Êı
+		int Scenerevover(Process e);//CPUÏÖ³¡»Ö¸´º¯Êı 
 	protected:
 		 
 };
 
-//å†…å­˜(ç”¨æˆ·åŒº)
+//ÄÚ´æ(ÓÃ»§Çø)
 class Memory
 {
 	public:
-	//å±æ€§
-	//å†…å­˜åŸºæœ¬ä¿¡æ¯ 
-	int SpaceSize;//å†…å­˜ç©ºé—´å¤§å° (é»˜è®¤100*1000B)
-	int BlockNum;//ç‰©ç†å—æ•°é‡ï¼ˆ100ï¼‰
-	int BlockSize;//ç‰©ç†å—å¤§å°ï¼ˆ1000ï¼‰ 
+	//ÊôĞÔ
+	//ÄÚ´æ»ù±¾ĞÅÏ¢ 
+	int SpaceSize;//ÄÚ´æ¿Õ¼ä´óĞ¡ (Ä¬ÈÏ100*1000B)
+	int BlockNum;//ÎïÀí¿éÊıÁ¿£¨100£©
+	int BlockSize;//ÎïÀí¿é´óĞ¡£¨1000£© 
 	
-	//å†…å­˜ç®¡ç†ä¿¡æ¯
-	Block_Table block_table;//å†…å­˜ç‰©ç†å—è¡¨ 
-	int FreeSpace;//å‰©ä½™ç©ºé—´
-	int UsedSpace;//å·²ç”¨ç©ºé—´ 
+	//ÄÚ´æ¹ÜÀíĞÅÏ¢
+	Block_Table block_table;//ÄÚ´æÎïÀí¿é±í 
+	int FreeSpace;//Ê£Óà¿Õ¼ä
+	int UsedSpace;//ÒÑÓÃ¿Õ¼ä 
 		
-	//æ–¹æ³• 
+	//·½·¨ 
 	Memory();
-	int AllocationSpace(int size,int JobId,Page_Table &page_table);//åˆ†é…èµ„æº
-	int RecycleSpace(int size,int ProId);//å›æ”¶èµ„æº 
-	void Print(ofstream &file);//å°†ç‰©ç†å—è¡¨è¾“å‡ºåˆ°æ–‡ä»¶ 
+	int AllocationSpace(int size,int JobId,Page_Table &page_table);//·ÖÅä×ÊÔ´
+	int RecycleSpace(int size,int ProId);//»ØÊÕ×ÊÔ´ 
+	void Print(ofstream &file);//½«ÎïÀí¿é±íÊä³öµ½ÎÄ¼ş 
 }; 
 
 
@@ -69,21 +69,21 @@ class Memory
 class MMU
 {
 	public:
-		//å±æ€§ 
-		Page_Table *page_table_addr;//ç¡¬ä»¶é¡µè¡¨åŸºå€å¯„å­˜å™¨ 
+		//ÊôĞÔ 
+		Page_Table *page_table_addr;//Ó²¼şÒ³±í»ùÖ·¼Ä´æÆ÷ 
 		
-		//æ–¹æ³• 
-		MMU();    //æ„é€ å‡½æ•° 
+		//·½·¨ 
+		MMU();    //¹¹Ôìº¯Êı 
 		void go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &pianyi,int &paddr);
-		void PageTableAddr(Page_Table &page_table);//ç®¡ç†é¡µè¡¨åŸºå€å¯„å­˜å™¨ 
-		void BreakAddr(int addr,int &pageid,int &pianyi);//åˆ†è§£é€»è¾‘åœ°å€
-		void VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr);//è®¿é—®é¡µè¡¨
-		void MissingPage(int id);//å‘å‡ºå¼‚å¸¸ 
+		void PageTableAddr(Page_Table &page_table);//¹ÜÀíÒ³±í»ùÖ·¼Ä´æÆ÷ 
+		void BreakAddr(int addr,int &pageid,int &pianyi);//·Ö½âÂß¼­µØÖ·
+		void VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr);//·ÃÎÊÒ³±í
+		void MissingPage(int id);//·¢³öÒì³£ 
 		
 	protected:
 };
 
-//-----------------------------------Timeç±»---------------------------------------------------------
+//-----------------------------------TimeÀà---------------------------------------------------------
 class Time
 {
 private:
@@ -94,19 +94,19 @@ private:
 		int sec;
 	}time_hmc;
 	public:
-		//è·å–å½“å‰æ—¶é—´å‡½æ•°
+		//»ñÈ¡µ±Ç°Ê±¼äº¯Êı
 		void GetTime()
 		{
 			time_t timep;
 			struct tm *p;
-			time(&timep);  //è½¬æ¢æˆç§’æ•°
-			p = localtime(&timep);  //æ—¶é—´å¹´æœˆæ—¥ç­‰ç»“æ„ä½“
+			time(&timep);  //×ª»»³ÉÃëÊı
+			p = localtime(&timep);  //Ê±¼äÄêÔÂÈÕµÈ½á¹¹Ìå
 			time_hmc.hour = p->tm_hour;
 			time_hmc.min = p->tm_min;
 			time_hmc.sec = p->tm_sec;
 		}
 		
-		//éšæœºæ•°ç”Ÿæˆ
+		//Ëæ»úÊıÉú³É
 		int RandNum(int start,int end)
 		{
 			
@@ -115,7 +115,7 @@ private:
 		
 		void test()
 		{
-			cout<<time_hmc.hour<<":"<<time_hmc.min<<":"<<time_hmc.sec<<"\t"<<"\n";  //å¤šçº¿ç¨‹ä¹‹ä¸­ä½¿ç”¨endlä¼šæœ‰æ¸…ç©ºç¼“å­˜åŒºå†²çª
+			cout<<time_hmc.hour<<":"<<time_hmc.min<<":"<<time_hmc.sec<<"\t"<<"\n";  //¶àÏß³ÌÖ®ÖĞÊ¹ÓÃendl»áÓĞÇå¿Õ»º´æÇø³åÍ»
 		}
 };
 

@@ -1,7 +1,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-//ç›¸å…³å¤´æ–‡ä»¶å£°æ˜ 
+//Ïà¹ØÍ·ÎÄ¼şÉùÃ÷ 
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -13,7 +13,7 @@
 
 using namespace std;
 
-//utils.hç›¸å…³ç±»å£°æ˜ 
+//utils.hÏà¹ØÀàÉùÃ÷ 
 
 
 

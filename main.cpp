@@ -1,32 +1,32 @@
-//ç›¸å…³å¤´æ–‡ä»¶å£°æ˜ 
+//Ïà¹ØÍ·ÎÄ¼şÉùÃ÷ 
 #include "utils.h"
-#include "windows.h"  //ä½¿ç”¨ç³»ç»Ÿçº§çº¿ç¨‹
+#include "windows.h"  //Ê¹ÓÃÏµÍ³¼¶Ïß³Ì
 #include "process.h"
 #include "hardware.h" 
 #include "job.h"
 
 
-//ä¼ å…¥çº¿ç¨‹å‚æ•°çš„ç»“æ„ä½“ 
+//´«ÈëÏß³Ì²ÎÊıµÄ½á¹¹Ìå 
 typedef struct node{
-	Memory memory;//å»ºç«‹å†…å­˜ 
-	JCB_Table jcb_table;//å»ºç«‹ä½œä¸šè¡¨
-	Pool_Queue pool_queue;//å»ºç«‹åå¤‡é˜Ÿåˆ— 
-	Job_Scheduler job_scheduler;//å»ºç«‹ä½œä¸šè°ƒåº¦å™¨ 
-	PCB_Table pcb_table;//å»ºç«‹PCBè¡¨
-	Page_Table page_table[11];//å»ºç«‹10å¼ é¡µè¡¨ 
-	LinkQueue ready;//å°±ç»ªé˜Ÿåˆ—
-	LinkQueue run;//è¿è¡Œé˜Ÿåˆ— 
-	LinkQueue block;//é˜»å¡é˜Ÿåˆ—
-	LinkQueue finish;//å®Œæˆé˜Ÿåˆ— 
-	ofstream fmemory;//å†…å­˜æ–‡ä»¶ 
-	ofstream fjob;//ä½œä¸šæ–‡ä»¶ 
-	ofstream frun;//è¿è¡Œæƒ…å†µä¿å­˜æ–‡ä»¶ 
+	Memory memory;//½¨Á¢ÄÚ´æ 
+	JCB_Table jcb_table;//½¨Á¢×÷Òµ±í
+	Pool_Queue pool_queue;//½¨Á¢ºó±¸¶ÓÁĞ 
+	Job_Scheduler job_scheduler;//½¨Á¢×÷Òµµ÷¶ÈÆ÷ 
+	PCB_Table pcb_table;//½¨Á¢PCB±í
+	Page_Table page_table[11];//½¨Á¢10ÕÅÒ³±í 
+	LinkQueue ready;//¾ÍĞ÷¶ÓÁĞ
+	LinkQueue run;//ÔËĞĞ¶ÓÁĞ 
+	LinkQueue block;//×èÈû¶ÓÁĞ
+	LinkQueue finish;//Íê³É¶ÓÁĞ 
+	ofstream fmemory;//ÄÚ´æÎÄ¼ş 
+	ofstream fjob;//×÷ÒµÎÄ¼ş 
+	ofstream frun;//ÔËĞĞÇé¿ö±£´æÎÄ¼ş 
 	MMU mmu;
-	Time time;//æ—¶é’Ÿï¼ˆéšæœºæ•°ç”Ÿæˆï¼‰ 
+	Time time;//Ê±ÖÓ£¨Ëæ»úÊıÉú³É£© 
 	int k; 
 }DATA; 
 
-//çº¿ç¨‹ä¸»ä½“å‡½æ•° 
+//Ïß³ÌÖ÷Ìåº¯Êı 
 DWORD WINAPI ThreadFun(LPVOID pM) 
 {
 	DATA *data = (DATA*)pM;
@@ -39,12 +39,12 @@ DWORD WINAPI ThreadFun(LPVOID pM)
 			JCB e;
 			data->pool_queue.GetTop(e);
 			int loop1 = e.JobId;
-			while(data->pool_queue.front != data->pool_queue.rear)//ç­‰å¾…å†…å­˜æœ‰ç©ºé—²èµ„æº 
+			while(data->pool_queue.front != data->pool_queue.rear)//µÈ´ıÄÚ´æÓĞ¿ÕÏĞ×ÊÔ´ 
 			{
-				cout<<"\n"<<"å†…å­˜ç©ºé—²ï¼Œä¸€ä¸ªæ–°çš„ä½œä¸šè¿›å…¥ç³»ç»Ÿï¼"<<"\n"<<endl;
-				data->frun<<"\n"<<"å†…å­˜ç©ºé—²ï¼Œä¸€ä¸ªæ–°çš„ä½œä¸šè¿›å…¥ç³»ç»Ÿï¼"<<"\n"<<endl;
+				cout<<"\n"<<"ÄÚ´æ¿ÕÏĞ£¬Ò»¸öĞÂµÄ×÷Òµ½øÈëÏµÍ³£¡"<<"\n"<<endl;
+				data->frun<<"\n"<<"ÄÚ´æ¿ÕÏĞ£¬Ò»¸öĞÂµÄ×÷Òµ½øÈëÏµÍ³£¡"<<"\n"<<endl;
 				JCB temp;
-				if(data->job_scheduler.go(data->pool_queue,temp,data->memory,data->page_table[loop1],data->time,data->pcb_table,data->ready,data->jcb_table) == 0)//æ‰¹å¤„ç†ä½œä¸šçš„è°ƒåº¦
+				if(data->job_scheduler.go(data->pool_queue,temp,data->memory,data->page_table[loop1],data->time,data->pcb_table,data->ready,data->jcb_table) == 0)//Åú´¦Àí×÷ÒµµÄµ÷¶È
 				{
 					data->k = 0;
 					break;
@@ -63,8 +63,8 @@ DWORD WINAPI ThreadFun(LPVOID pM)
 			data->block.DeQueue(e);
 			data->ready.EnQueue(e);
 			//
-			cout<<"\n"<<"ä¸€ä¸ªé˜»å¡çš„è¿›ç¨‹å·²ç»è¢«å”¤é†’"<<"\n"<<endl;
-			data->frun<<"\n"<<"ä¸€ä¸ªé˜»å¡çš„è¿›ç¨‹å·²ç»è¢«å”¤é†’"<<"\n"<<endl;
+			cout<<"\n"<<"Ò»¸ö×èÈûµÄ½ø³ÌÒÑ¾­±»»½ĞÑ"<<"\n"<<endl;
+			data->frun<<"\n"<<"Ò»¸ö×èÈûµÄ½ø³ÌÒÑ¾­±»»½ĞÑ"<<"\n"<<endl;
 		}
 	
 			//Sleep(50);
@@ -74,70 +74,70 @@ DWORD WINAPI ThreadFun(LPVOID pM)
 
 int main()
 {
-	                                                //ç¨‹åºåˆå§‹åŒ–
+	                                                //³ÌĞò³õÊ¼»¯
 	cout<<"============================================================================"<<endl; 
-	cout<<"=                        è™šæ‹Ÿé¡µå¼å­˜å‚¨ç®¡ç†ç³»ç»Ÿ                              ="<<endl;
-	cout<<"=                                                  è®¡ç§‘142   å¼ é¢–          ="<<endl;  
+	cout<<"=                        ĞéÄâÒ³Ê½´æ´¢¹ÜÀíÏµÍ³                              ="<<endl;
+	cout<<"=                                                  ¼Æ¿Æ142   ÕÅÓ±          ="<<endl;  
 	cout<<"============================================================================"<<endl; 
-	cout<<"ç¨‹åºåˆå§‹åŒ–.."<<endl;
+	cout<<"³ÌĞò³õÊ¼»¯.."<<endl;
 	Sleep(1000);
-	srand(time(0));//æ—¶é—´ä½œç§	
-	DATA *Adata = new DATA;//ä¼ å…¥çº¿ç¨‹çš„å‚æ•° 
+	srand(time(0));//Ê±¼ä×÷ÖÖ	
+	DATA *Adata = new DATA;//´«ÈëÏß³ÌµÄ²ÎÊı 
 	Cpu CPU;
 	Adata->k = 0;
 
 	if(Adata == 0)
 	{
-		cout<<"ç¨‹åºåˆå§‹åŒ–å¤±è´¥ï¼"<<endl;
+		cout<<"³ÌĞò³õÊ¼»¯Ê§°Ü£¡"<<endl;
 		return 1;
 	}
-	Adata->fmemory.open("å†…å­˜.txt",ios::trunc); //ios::truncè¡¨ç¤ºåœ¨æ‰“å¼€æ–‡ä»¶å‰å°†æ–‡ä»¶æ¸…ç©º
-	Adata->fjob.open("ä½œä¸šè¡¨.txt",ios::trunc); //ios::truncè¡¨ç¤ºåœ¨æ‰“å¼€æ–‡ä»¶å‰å°†æ–‡ä»¶æ¸…ç©º
-	Adata->frun.open("è¿è¡Œæƒ…å†µ.txt",ios::trunc); //ios::truncè¡¨ç¤ºåœ¨æ‰“å¼€æ–‡ä»¶å‰å°†æ–‡ä»¶æ¸…ç©º
-	Adata->fmemory<<"ä½œä¸šè¿˜æœªè¿›å…¥å†…å­˜æ—¶å†…å­˜æƒ…å†µ"<<"\r\n";
+	Adata->fmemory.open("ÄÚ´æ.txt",ios::trunc); //ios::trunc±íÊ¾ÔÚ´ò¿ªÎÄ¼şÇ°½«ÎÄ¼şÇå¿Õ
+	Adata->fjob.open("×÷Òµ±í.txt",ios::trunc); //ios::trunc±íÊ¾ÔÚ´ò¿ªÎÄ¼şÇ°½«ÎÄ¼şÇå¿Õ
+	Adata->frun.open("ÔËĞĞÇé¿ö.txt",ios::trunc); //ios::trunc±íÊ¾ÔÚ´ò¿ªÎÄ¼şÇ°½«ÎÄ¼şÇå¿Õ
+	Adata->fmemory<<"×÷Òµ»¹Î´½øÈëÄÚ´æÊ±ÄÚ´æÇé¿ö"<<"\r\n";
 	Adata->fmemory<<"-----------------------------------------------------------------"<<"\r\n"; 
-	Adata->memory.Print(Adata->fmemory); //æ‰“å°å†…å­˜çŠ¶å†µ
-	cout<<"ç¨‹åºåˆå§‹åŒ–æˆåŠŸï¼"<<endl;
-	//Adata->frun<<"ç¨‹åºåˆå§‹åŒ–æˆåŠŸï¼"<<endl;
+	Adata->memory.Print(Adata->fmemory); //´òÓ¡ÄÚ´æ×´¿ö
+	cout<<"³ÌĞò³õÊ¼»¯³É¹¦£¡"<<endl;
+	//Adata->frun<<"³ÌĞò³õÊ¼»¯³É¹¦£¡"<<endl;
 	
 	
-	                                           //æ‰¹å¤„ç†ä½œä¸šçš„ç»„ç»‡ä¸ç®¡ç†
+	                                           //Åú´¦Àí×÷ÒµµÄ×éÖ¯Óë¹ÜÀí
 	/*
-	1ã€æ‰¹å¤„ç†ä½œä¸šçš„å»ºç«‹ï¼šä¸ºæ¯ä¸ªä½œä¸šå»ºç«‹ç›¸åº”çš„ä½œä¸šæ§åˆ¶å—ï¼Œå¹¶å°†æ‰€æœ‰JCBç»„ç»‡æˆä½œä¸šè¡¨ ,
-		æŠŠå·²è¾“å…¥å¹¶å»ºå¥½çš„JCBä½œä¸šæ’å…¥åå¤‡é˜Ÿåˆ—ï¼Œç­‰å¾…ä½œä¸šè°ƒåº¦ 
+	1¡¢Åú´¦Àí×÷ÒµµÄ½¨Á¢£ºÎªÃ¿¸ö×÷Òµ½¨Á¢ÏàÓ¦µÄ×÷Òµ¿ØÖÆ¿é£¬²¢½«ËùÓĞJCB×éÖ¯³É×÷Òµ±í ,
+		°ÑÒÑÊäÈë²¢½¨ºÃµÄJCB×÷ÒµÅÅÈëºó±¸¶ÓÁĞ£¬µÈ´ı×÷Òµµ÷¶È 
 	*/ 
 	for(int i = 1;i <= 10;i++)
 	{
 		JCB jcb;
-		jcb.Init(i,(i+1)*50,Adata->time.RandNum(15,25));//ä¸ºæ¯ä¸ªä½œä¸šå»ºç«‹ç›¸åº”çš„ä½œä¸šæ§åˆ¶å— 
-		Adata->jcb_table.InsertJCB(jcb,i);//å°†JCBç»„ç»‡æˆä½œä¸šè¡¨ 
-		Adata->pool_queue.EnQueue(jcb);//æŠŠå·²è¾“å…¥å¹¶å»ºå¥½çš„JCBæ’å…¥åå¤‡é˜Ÿåˆ— 
+		jcb.Init(i,(i+1)*50,Adata->time.RandNum(15,25));//ÎªÃ¿¸ö×÷Òµ½¨Á¢ÏàÓ¦µÄ×÷Òµ¿ØÖÆ¿é 
+		Adata->jcb_table.InsertJCB(jcb,i);//½«JCB×éÖ¯³É×÷Òµ±í 
+		Adata->pool_queue.EnQueue(jcb);//°ÑÒÑÊäÈë²¢½¨ºÃµÄJCBÅÅÈëºó±¸¶ÓÁĞ 
 		cout<<endl; 
 		Sleep(200);
 	}
-	Adata->fjob<<"ä½œä¸šç­‰å¾…è°ƒåº¦"<<endl;//æ‰“å°ç›®å‰ä½œä¸šè¡¨ 
+	Adata->fjob<<"×÷ÒµµÈ´ıµ÷¶È"<<endl;//´òÓ¡Ä¿Ç°×÷Òµ±í 
 	Adata->fjob<<"----------------------------------------------------"<<endl;
 	Adata->jcb_table.PrintTable(Adata->fjob);
-	cout<<"ç›®å‰ä½œä¸šè¡¨ä¿¡æ¯å·²å­˜å…¥â€œä½œä¸šè¡¨.txtâ€ï¼"<<endl;
+	cout<<"Ä¿Ç°×÷Òµ±íĞÅÏ¢ÒÑ´æÈë¡°×÷Òµ±í.txt¡±£¡"<<endl;
 	cout<<"------------------------------------------------------------------"<<endl;
 	cout<<endl;
 	
 	/*
-	2ã€æ‰¹å¤„ç†ä½œä¸šçš„è°ƒåº¦ï¼›ä½œä¸šè°ƒåº¦ç¨‹åºéœ€å®Œæˆä»¥ä¸‹ä»»åŠ¡ï¼š
-		a.é€‰æ‹©ä½œä¸šã€‚å…ˆæ¥å…ˆæœåŠ¡ç®—æ³•
-		b.åˆ†é…èµ„æºã€‚ä½œä¸šè°ƒåº¦ç¨‹åºä¸å­˜å‚¨ç®¡ç†ç¨‹åºè¿›è¡Œé€šè®¯ï¼Œä¸ºä½œä¸šåˆ†é…æ‰€éœ€çš„èµ„æºã€‚
-		c.åˆ›å»ºè¿›ç¨‹ã€‚æ¯å½“é€‰ä¸­ä½œä¸šä¸”å°†å…¶è£…å…¥å†…å­˜æ—¶ï¼Œç³»ç»Ÿå°±ä¸ºæ­¤ä½œä¸šåˆ›å»ºåº”ç”¨è¿›ç¨‹ï¼Œç”ŸæˆPCBåŠå¯¹åº”è¿›ç¨‹å®ä½“ï¼Œè¿™äº›è¿›ç¨‹å°†åœ¨ä½çº§è°ƒåº¦æ§åˆ¶ä¸‹å ç”¨å¤„ç†å™¨è¿è¡Œã€‚ï¼ˆå¯åŒæ—¶è£…å…¥å¤šä¸ªä½œä¸šå¹¶å¯åŠ¨è¿è¡Œï¼‰
-		d.åç»­å¤„ç†ã€‚ä½œä¸šæ­£å¸¸ç»“æŸæˆ–å‡ºé”™ç»ˆæ­¢æ—¶ï¼Œä½œä¸šè°ƒåº¦ç¨‹åºè¦åšå¥½ä½œä¸šæ’¤ç¦»å’Œå®Œå–„å·¥ä½œï¼Œå¦‚æ‰“å°è¾“å‡ºä¿¡æ¯ã€å›æ”¶å„ç§èµ„æºã€æ’¤é”€JCBç­‰ï¼›åŒæ—¶ï¼Œå¯åŠ¨ä½œä¸šè°ƒåº¦ç¨‹åºé€‰æ‹©æ–°ä½œä¸šè¿›å…¥å†…å­˜ï¼›
+	2¡¢Åú´¦Àí×÷ÒµµÄµ÷¶È£»×÷Òµµ÷¶È³ÌĞòĞèÍê³ÉÒÔÏÂÈÎÎñ£º
+		a.Ñ¡Ôñ×÷Òµ¡£ÏÈÀ´ÏÈ·şÎñËã·¨
+		b.·ÖÅä×ÊÔ´¡£×÷Òµµ÷¶È³ÌĞòÓë´æ´¢¹ÜÀí³ÌĞò½øĞĞÍ¨Ñ¶£¬Îª×÷Òµ·ÖÅäËùĞèµÄ×ÊÔ´¡£
+		c.´´½¨½ø³Ì¡£Ã¿µ±Ñ¡ÖĞ×÷ÒµÇÒ½«Æä×°ÈëÄÚ´æÊ±£¬ÏµÍ³¾ÍÎª´Ë×÷Òµ´´½¨Ó¦ÓÃ½ø³Ì£¬Éú³ÉPCB¼°¶ÔÓ¦½ø³ÌÊµÌå£¬ÕâĞ©½ø³Ì½«ÔÚµÍ¼¶µ÷¶È¿ØÖÆÏÂÕ¼ÓÃ´¦ÀíÆ÷ÔËĞĞ¡££¨¿ÉÍ¬Ê±×°Èë¶à¸ö×÷Òµ²¢Æô¶¯ÔËĞĞ£©
+		d.ºóĞø´¦Àí¡£×÷ÒµÕı³£½áÊø»ò³ö´íÖÕÖ¹Ê±£¬×÷Òµµ÷¶È³ÌĞòÒª×öºÃ×÷Òµ³·ÀëºÍÍêÉÆ¹¤×÷£¬Èç´òÓ¡Êä³öĞÅÏ¢¡¢»ØÊÕ¸÷ÖÖ×ÊÔ´¡¢³·ÏúJCBµÈ£»Í¬Ê±£¬Æô¶¯×÷Òµµ÷¶È³ÌĞòÑ¡ÔñĞÂ×÷Òµ½øÈëÄÚ´æ£»
 	*/
-	cout<<"å¼€å§‹ä½œä¸šè°ƒåº¦.."<<endl;
-	cout<<"è¾“å…¥ä»»ä½•ä¸œè¥¿ï¼Œå›è½¦ç»§ç»­ï¼"<<endl; 
+	cout<<"¿ªÊ¼×÷Òµµ÷¶È.."<<endl;
+	cout<<"ÊäÈëÈÎºÎ¶«Î÷£¬»Ø³µ¼ÌĞø£¡"<<endl; 
 	cout<<"***********************************************************"<<endl;
 	char get = getchar();
 	int loop1 = 1;
 	while(Adata->pool_queue.front != Adata->pool_queue.rear)
 	{
 		JCB temp;
-		if(Adata->job_scheduler.go(Adata->pool_queue,temp,Adata->memory,Adata->page_table[loop1],Adata->time,Adata->pcb_table,Adata->ready,Adata->jcb_table) == 0)//æ‰¹å¤„ç†ä½œä¸šçš„è°ƒåº¦
+		if(Adata->job_scheduler.go(Adata->pool_queue,temp,Adata->memory,Adata->page_table[loop1],Adata->time,Adata->pcb_table,Adata->ready,Adata->jcb_table) == 0)//Åú´¦Àí×÷ÒµµÄµ÷¶È
 		{
 			break;
 		}
@@ -145,63 +145,63 @@ int main()
 		loop1++; 
 		Sleep(200);
 	}
-	//æ‰“å°ç›¸å…³ä¿¡æ¯
-	Adata->fjob<<"ä½œä¸šåˆæ¬¡è°ƒåº¦å"<<endl;//æ‰“å°ç›®å‰ä½œä¸šè¡¨ 
+	//´òÓ¡Ïà¹ØĞÅÏ¢
+	Adata->fjob<<"×÷Òµ³õ´Îµ÷¶Èºó"<<endl;//´òÓ¡Ä¿Ç°×÷Òµ±í 
 	Adata->fjob<<"----------------------------------------------------"<<endl;
 	Adata->jcb_table.PrintTable(Adata->fjob);
-	cout<<"ç›®å‰ä½œä¸šè¡¨ä¿¡æ¯å·²å­˜å…¥â€œä½œä¸šè¡¨.txtâ€ï¼"<<endl;
+	cout<<"Ä¿Ç°×÷Òµ±íĞÅÏ¢ÒÑ´æÈë¡°×÷Òµ±í.txt¡±£¡"<<endl;
 	
-	Adata->pcb_table.PrintTable("è¿›ç¨‹è¡¨.txt");//æ‰“å°è¿›ç¨‹è¡¨
-	cout<<"ç›®å‰è¿›ç¨‹è¡¨ä¿¡æ¯å·²å­˜å…¥â€œè¿›ç¨‹è¡¨.txtâ€ï¼"<<endl;	
+	Adata->pcb_table.PrintTable("½ø³Ì±í.txt");//´òÓ¡½ø³Ì±í
+	cout<<"Ä¿Ç°½ø³Ì±íĞÅÏ¢ÒÑ´æÈë¡°½ø³Ì±í.txt¡±£¡"<<endl;	
 	
-	char *Npage[] = {"é¡µè¡¨1.txt","é¡µè¡¨2.txt","é¡µè¡¨3.txt","é¡µè¡¨4.txt","é¡µè¡¨5.txt","é¡µè¡¨6.txt","é¡µè¡¨7.txt","é¡µè¡¨8.txt","é¡µè¡¨9.txt","é¡µè¡¨10.txt",};
-	for(int i = 1;i <= 10;i++)//æ‰“å°é¡µè¡¨
+	char *Npage[] = {"Ò³±í1.txt","Ò³±í2.txt","Ò³±í3.txt","Ò³±í4.txt","Ò³±í5.txt","Ò³±í6.txt","Ò³±í7.txt","Ò³±í8.txt","Ò³±í9.txt","Ò³±í10.txt",};
+	for(int i = 1;i <= 10;i++)//´òÓ¡Ò³±í
 	{	
 		Adata->page_table[i].PrintTable(Npage[i-1]);
-		cout<<"è¿›ç¨‹"<<i<<"å¯¹åº”é¡µè¡¨ä¿¡æ¯å·²å­˜å…¥â€œé¡µè¡¨"<<i<<".txtâ€ï¼"<<endl;
+		cout<<"½ø³Ì"<<i<<"¶ÔÓ¦Ò³±íĞÅÏ¢ÒÑ´æÈë¡°Ò³±í"<<i<<".txt¡±£¡"<<endl;
 	}
-	Adata->fmemory<<"ä½œä¸šåˆæ¬¡è°ƒåº¦åçš„å†…å­˜æƒ…å†µ"<<"\r\n";
+	Adata->fmemory<<"×÷Òµ³õ´Îµ÷¶ÈºóµÄÄÚ´æÇé¿ö"<<"\r\n";
 	Adata->fmemory<<"-----------------------------------------------------------------"<<"\r\n"; 
-	Adata->memory.Print(Adata->fmemory); //æ‰“å°å†…å­˜çŠ¶å†µ
-	cout<<"ç›®å‰å†…å­˜çŠ¶æ€ä¿¡æ¯å·²å­˜å…¥â€œå†…å­˜.txtâ€ï¼"<<endl;	
+	Adata->memory.Print(Adata->fmemory); //´òÓ¡ÄÚ´æ×´¿ö
+	cout<<"Ä¿Ç°ÄÚ´æ×´Ì¬ĞÅÏ¢ÒÑ´æÈë¡°ÄÚ´æ.txt¡±£¡"<<endl;	
 	cout<<"------------------------------------------------------------"<<endl;
 	
 	
-	                                                      /*è¿›ç¨‹è°ƒåº¦ï¼ˆæ—¶é—´ç‰‡è½®è½¬æ³•ï¼‰*/	
-	cout<<"\r\n"<<"å¼€å§‹è¿›ç¨‹è°ƒåº¦ï¼ˆæ—¶é—´ç‰‡è½®è½¬æ³•ï¼‰.."<<endl;
-	cout<<"è¾“å…¥ä»»ä½•ä¸œè¥¿ï¼Œå›è½¦ç»§ç»­ï¼"<<endl; 
+	                                                      /*½ø³Ìµ÷¶È£¨Ê±¼äÆ¬ÂÖ×ª·¨£©*/	
+	cout<<"\r\n"<<"¿ªÊ¼½ø³Ìµ÷¶È£¨Ê±¼äÆ¬ÂÖ×ª·¨£©.."<<endl;
+	cout<<"ÊäÈëÈÎºÎ¶«Î÷£¬»Ø³µ¼ÌĞø£¡"<<endl; 
 	cout<<"***********************************************************"<<endl;
 	getchar();
 	get = getchar();
 
-	HANDLE handle = CreateThread(NULL,0,ThreadFun,Adata,0,NULL);//çº¿ç¨‹å¯åŠ¨å‡½æ•° 
+	HANDLE handle = CreateThread(NULL,0,ThreadFun,Adata,0,NULL);//Ïß³ÌÆô¶¯º¯Êı 
 	
-	//æ—¶é—´ç‰‡è½®è½¬æ³• 
+	//Ê±¼äÆ¬ÂÖ×ª·¨ 
 	while(Adata->ready.front != Adata->ready.rear) 
 	{
 		Sleep(100);
 		int alltime = 0;
-		int capacity = 60;//ç¬¬ä¸€é˜Ÿåˆ—æ—¶é—´ç‰‡ 
+		int capacity = 60;//µÚÒ»¶ÓÁĞÊ±¼äÆ¬ 
 		Process e;
-		Adata->ready.DeQueue(e);//å°±ç»ªé˜Ÿåˆ—ç¬¬ä¸€ä¸ªå…ƒç´ å‡ºé˜Ÿï¼Œè¿›å…¥è¿è¡Œé˜Ÿåˆ— 
+		Adata->ready.DeQueue(e);//¾ÍĞ÷¶ÓÁĞµÚÒ»¸öÔªËØ³ö¶Ó£¬½øÈëÔËĞĞ¶ÓÁĞ 
 		Adata->run.EnQueue(e);
 					 
-		//è¿è¡Œè¯¥è¿›ç¨‹ç¬¬ä¸€æ¡æŒ‡ä»¤ 
+		//ÔËĞĞ¸Ã½ø³ÌµÚÒ»ÌõÖ¸Áî 
 		Adata->pcb_table.process[e.ProID].ProState = 2;
-		CPU.Scenerevover(Adata->pcb_table.process[e.ProID]);//CPUç°åœºå›å¤å‡½æ•° 
+		CPU.Scenerevover(Adata->pcb_table.process[e.ProID]);//CPUÏÖ³¡»Ø¸´º¯Êı 
 					
-		cout<<"è¿›ç¨‹"<<e.ProID<<"é¡µè¡¨åœ°å€è£…å…¥é¡µè¡¨åŸºå€å¯„å­˜å™¨ï¼"<<endl; 
-		Adata->frun<<"è¿›ç¨‹"<<e.ProID<<"é¡µè¡¨åœ°å€è£…å…¥é¡µè¡¨åŸºå€å¯„å­˜å™¨ï¼"<<endl; 
-		cout<<"æ­£åœ¨è¿è¡Œç¬¬"<<e.ProID<<"ä¸ªè¿›ç¨‹"<<"ï¼Œç¬¬"<<CPU.IR<<"ä¸ªæŒ‡ä»¤,"; 
-		Adata->frun<<"æ­£åœ¨è¿è¡Œç¬¬"<<e.ProID<<"ä¸ªè¿›ç¨‹"<<"ï¼Œç¬¬"<<CPU.IR<<"ä¸ªæŒ‡ä»¤,";
+		cout<<"½ø³Ì"<<e.ProID<<"Ò³±íµØÖ·×°ÈëÒ³±í»ùÖ·¼Ä´æÆ÷£¡"<<endl; 
+		Adata->frun<<"½ø³Ì"<<e.ProID<<"Ò³±íµØÖ·×°ÈëÒ³±í»ùÖ·¼Ä´æÆ÷£¡"<<endl; 
+		cout<<"ÕıÔÚÔËĞĞµÚ"<<e.ProID<<"¸ö½ø³Ì"<<"£¬µÚ"<<CPU.IR<<"¸öÖ¸Áî,"; 
+		Adata->frun<<"ÕıÔÚÔËĞĞµÚ"<<e.ProID<<"¸ö½ø³Ì"<<"£¬µÚ"<<CPU.IR<<"¸öÖ¸Áî,";
 					
-		if(Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].State == 1)//å½“æŒ‡ä»¤ä¸ºç”¨æˆ·æ€æ“ä½œ 
+		if(Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].State == 1)//µ±Ö¸ÁîÎªÓÃ»§Ì¬²Ù×÷ 
 		{
 			int addr = Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].addr;
 			int pageid;int pianyi;int paddr;
-			cout<<"è¯¥æŒ‡ä»¤ä¸ºç”¨æˆ·æ€è®¡ç®—æ“ä½œ"<<",é€»è¾‘åœ°å€ä¸º"<<addr<<endl; 
-			Adata->frun<<"è¯¥æŒ‡ä»¤ä¸ºç”¨æˆ·æ€è®¡ç®—æ“ä½œ"<<",é€»è¾‘åœ°å€ä¸º"<<addr<<endl; 
-			Adata->mmu.go(Adata->frun,Adata->page_table[e.ProID],addr,pageid,pianyi,paddr);//MMUå·¥ä½œ 
+			cout<<"¸ÃÖ¸ÁîÎªÓÃ»§Ì¬¼ÆËã²Ù×÷"<<",Âß¼­µØÖ·Îª"<<addr<<endl; 
+			Adata->frun<<"¸ÃÖ¸ÁîÎªÓÃ»§Ì¬¼ÆËã²Ù×÷"<<",Âß¼­µØÖ·Îª"<<addr<<endl; 
+			Adata->mmu.go(Adata->frun,Adata->page_table[e.ProID],addr,pageid,pianyi,paddr);//MMU¹¤×÷ 
 			cout<<endl;
 			Adata->frun<<endl; 
 			Sleep(Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].time); 
@@ -211,25 +211,25 @@ int main()
 			CPU.Sceneprotection(Adata->pcb_table.process[e.ProID]);
 					 	
 			Adata->run.DeQueue(e);
-			if(CPU.IR > Adata->pcb_table.process[e.ProID].InstrucNum)//åˆ¤æ–­æ˜¯å¦æ‰§è¡Œå®Œæˆ 
+			if(CPU.IR > Adata->pcb_table.process[e.ProID].InstrucNum)//ÅĞ¶ÏÊÇ·ñÖ´ĞĞÍê³É 
 			{
-				Adata->pcb_table.process[e.ProID].alltime = alltime;//è¿›ç¨‹çš„å‘¨è½¬æ—¶é—´ 
+				Adata->pcb_table.process[e.ProID].alltime = alltime;//½ø³ÌµÄÖÜ×ªÊ±¼ä 
 				Adata->finish.EnQueue(e);
-				cout<<"****è¿›ç¨‹"<<e.ProID<<"å·²è¿è¡Œå®Œæˆï¼****"<<endl; 
-				Adata->frun<<"****è¿›ç¨‹"<<e.ProID<<"å·²è¿è¡Œå®Œæˆï¼****"<<endl; 
-				//å›æ”¶å†…å­˜ 
+				cout<<"****½ø³Ì"<<e.ProID<<"ÒÑÔËĞĞÍê³É£¡****"<<endl; 
+				Adata->frun<<"****½ø³Ì"<<e.ProID<<"ÒÑÔËĞĞÍê³É£¡****"<<endl; 
+				//»ØÊÕÄÚ´æ 
 				JCB jcb;
 				Adata->jcb_table.SearchJobId(e.JobId,jcb);
 				Adata->memory.RecycleSpace(jcb.MemorySize-5,jcb.JobId);
-				cout<<"****ä½œä¸š"<<e.ProID<<"å·²è¿è¡Œå®Œæˆï¼****"<<endl; 
-				Adata->frun<<"****ä½œä¸š"<<e.ProID<<"å·²è¿è¡Œå®Œæˆï¼****"<<endl;
-				cout<<"****å·²å›æ”¶"<<"ä½œä¸š"<<e.ProID<<"çš„èµ„æºï¼****"<<endl; 
-				Adata->frun<<"****å·²å›æ”¶"<<"ä½œä¸š"<<e.ProID<<"çš„èµ„æºï¼****"<<endl;
+				cout<<"****×÷Òµ"<<e.ProID<<"ÒÑÔËĞĞÍê³É£¡****"<<endl; 
+				Adata->frun<<"****×÷Òµ"<<e.ProID<<"ÒÑÔËĞĞÍê³É£¡****"<<endl;
+				cout<<"****ÒÑ»ØÊÕ"<<"×÷Òµ"<<e.ProID<<"µÄ×ÊÔ´£¡****"<<endl; 
+				Adata->frun<<"****ÒÑ»ØÊÕ"<<"×÷Òµ"<<e.ProID<<"µÄ×ÊÔ´£¡****"<<endl;
 				
 				
-				Adata->fmemory<<"ä½œä¸š"<<e.ProID<<"è¿è¡Œå®Œæˆæ—¶å†…å­˜çŠ¶å†µ"<<"\r\n";
+				Adata->fmemory<<"×÷Òµ"<<e.ProID<<"ÔËĞĞÍê³ÉÊ±ÄÚ´æ×´¿ö"<<"\r\n";
 				Adata->fmemory<<"-----------------------------------------------------------------"<<"\r\n"; 
-				Adata->memory.Print(Adata->fmemory); //æ‰“å°å†…å­˜çŠ¶å†µ
+				Adata->memory.Print(Adata->fmemory); //´òÓ¡ÄÚ´æ×´¿ö
 				
 				Adata->k = 1; 
 				Sleep(500);
@@ -240,13 +240,13 @@ int main()
 			}
 							
 		}
-		else//å½“æŒ‡ä»¤ä¸ºI/Oæ“ä½œ 
+		else//µ±Ö¸ÁîÎªI/O²Ù×÷ 
 		{
 			int addr = Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].addr;
 			int pageid;int pianyi;int paddr;
-			cout<<"è¯¥æŒ‡ä»¤ä¸ºI/Oæ“ä½œ"<<",é€»è¾‘åœ°å€ä¸º"<<addr<<endl; 
-			Adata->frun<<"è¯¥æŒ‡ä»¤ä¸ºI/Oæ“ä½œ"<<",é€»è¾‘åœ°å€ä¸º"<<addr<<endl; 
-			Adata->mmu.go(Adata->frun,Adata->page_table[e.ProID],addr,pageid,pianyi,paddr);//MMUå·¥ä½œ 
+			cout<<"¸ÃÖ¸ÁîÎªI/O²Ù×÷"<<",Âß¼­µØÖ·Îª"<<addr<<endl; 
+			Adata->frun<<"¸ÃÖ¸ÁîÎªI/O²Ù×÷"<<",Âß¼­µØÖ·Îª"<<addr<<endl; 
+			Adata->mmu.go(Adata->frun,Adata->page_table[e.ProID],addr,pageid,pianyi,paddr);//MMU¹¤×÷ 
 			cout<<endl;
 			Adata->frun<<endl; 
 			Sleep(Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].time); 
@@ -256,26 +256,26 @@ int main()
 			CPU.Sceneprotection(Adata->pcb_table.process[e.ProID]);
 					 	
 			Adata->run.DeQueue(e);
-			if(CPU.IR > Adata->pcb_table.process[e.ProID].InstrucNum)//åˆ¤æ–­æ˜¯å¦æ‰§è¡Œå®Œæˆ 
+			if(CPU.IR > Adata->pcb_table.process[e.ProID].InstrucNum)//ÅĞ¶ÏÊÇ·ñÖ´ĞĞÍê³É 
 			{
 				Adata->pcb_table.process[e.ProID].alltime = alltime;
 				Adata->finish.EnQueue(e);
-				cout<<"****è¿›ç¨‹"<<e.ProID<<"å·²è¿è¡Œå®Œæˆï¼****"<<endl; 
-				Adata->frun<<"****è¿›ç¨‹"<<e.ProID<<"å·²è¿è¡Œå®Œæˆï¼****"<<endl; 
+				cout<<"****½ø³Ì"<<e.ProID<<"ÒÑÔËĞĞÍê³É£¡****"<<endl; 
+				Adata->frun<<"****½ø³Ì"<<e.ProID<<"ÒÑÔËĞĞÍê³É£¡****"<<endl; 
 				//data1->L.DeleteProID(e.ProID);
-				//å›æ”¶å†…å­˜ 
+				//»ØÊÕÄÚ´æ 
 				JCB jcb;
 				Adata->jcb_table.SearchJobId(e.JobId,jcb);
 				Adata->memory.RecycleSpace(jcb.MemorySize-5,jcb.JobId);
-				cout<<"****ä½œä¸š"<<e.ProID<<"å·²è¿è¡Œå®Œæˆï¼****"<<endl; 
-				Adata->frun<<"****ä½œä¸š"<<e.ProID<<"å·²è¿è¡Œå®Œæˆï¼****"<<endl;
-				cout<<"****å·²å›æ”¶"<<"ä½œä¸š"<<e.ProID<<"çš„èµ„æºï¼****"<<endl; 
-				Adata->frun<<"****å·²å›æ”¶"<<"ä½œä¸š"<<e.ProID<<"çš„èµ„æºï¼****"<<endl; 
+				cout<<"****×÷Òµ"<<e.ProID<<"ÒÑÔËĞĞÍê³É£¡****"<<endl; 
+				Adata->frun<<"****×÷Òµ"<<e.ProID<<"ÒÑÔËĞĞÍê³É£¡****"<<endl;
+				cout<<"****ÒÑ»ØÊÕ"<<"×÷Òµ"<<e.ProID<<"µÄ×ÊÔ´£¡****"<<endl; 
+				Adata->frun<<"****ÒÑ»ØÊÕ"<<"×÷Òµ"<<e.ProID<<"µÄ×ÊÔ´£¡****"<<endl; 
 				 
 				
-				Adata->fmemory<<"ä½œä¸š"<<e.ProID<<"è¿è¡Œå®Œæˆæ—¶å†…å­˜çŠ¶å†µ"<<"\r\n";
+				Adata->fmemory<<"×÷Òµ"<<e.ProID<<"ÔËĞĞÍê³ÉÊ±ÄÚ´æ×´¿ö"<<"\r\n";
 				Adata->fmemory<<"-----------------------------------------------------------------"<<"\r\n"; 
-				Adata->memory.Print(Adata->fmemory); //æ‰“å°å†…å­˜çŠ¶å†µ
+				Adata->memory.Print(Adata->fmemory); //´òÓ¡ÄÚ´æ×´¿ö
 				
 				Adata->k = 1;
 				Sleep(500);
@@ -287,22 +287,22 @@ int main()
 		}
 		Sleep(100);						 	 				  
 	}
-	cout<<"\r\n"<<"ä»¥ä¸Šè¿è¡Œè¿‡ç¨‹å·²å­˜å…¥â€œè¿è¡Œæƒ…å†µ.txtâ€ï¼"<<endl;	
-	cout<<"ä»¥ä¸Šè¿è¡Œè¿‡ç¨‹çš„å†…å­˜çŠ¶æ€å˜åŒ–æƒ…å†µå·²å­˜å…¥â€œå†…å­˜.txtâ€ï¼"<<endl;
-	cout<<"å„è¿›ç¨‹é¡µè¡¨ä¿¡æ¯å·²åŒæ­¥è‡³ç›¸å…³æ–‡ä»¶ï¼"<<endl;
-	Adata->pcb_table.PrintTable("è¿›ç¨‹è¡¨(å®Œæˆ).txt");//æ‰“å°è¿›ç¨‹è¡¨
-	cout<<"ç›®å‰è¿›ç¨‹è¡¨ä¿¡æ¯å·²å­˜å…¥â€œè¿›ç¨‹è¡¨(å®Œæˆ).txtâ€ï¼"<<endl;	
-	Adata->fjob<<"ä½œä¸šå…¨éƒ¨è¿è¡Œå®Œæˆå"<<endl;//æ‰“å°ç›®å‰ä½œä¸šè¡¨ 
+	cout<<"\r\n"<<"ÒÔÉÏÔËĞĞ¹ı³ÌÒÑ´æÈë¡°ÔËĞĞÇé¿ö.txt¡±£¡"<<endl;	
+	cout<<"ÒÔÉÏÔËĞĞ¹ı³ÌµÄÄÚ´æ×´Ì¬±ä»¯Çé¿öÒÑ´æÈë¡°ÄÚ´æ.txt¡±£¡"<<endl;
+	cout<<"¸÷½ø³ÌÒ³±íĞÅÏ¢ÒÑÍ¬²½ÖÁÏà¹ØÎÄ¼ş£¡"<<endl;
+	Adata->pcb_table.PrintTable("½ø³Ì±í(Íê³É).txt");//´òÓ¡½ø³Ì±í
+	cout<<"Ä¿Ç°½ø³Ì±íĞÅÏ¢ÒÑ´æÈë¡°½ø³Ì±í(Íê³É).txt¡±£¡"<<endl;	
+	Adata->fjob<<"×÷ÒµÈ«²¿ÔËĞĞÍê³Éºó"<<endl;//´òÓ¡Ä¿Ç°×÷Òµ±í 
 	Adata->fjob<<"----------------------------------------------------"<<endl;
 	Adata->jcb_table.PrintTable(Adata->fjob);
-	cout<<"ç›®å‰ä½œä¸šè¡¨ä¿¡æ¯å·²å­˜å…¥â€œä½œä¸šè¡¨.txtâ€ï¼"<<endl;	
-	for(int i = 1;i <= 10;i++)//æ‰“å°é¡µè¡¨
+	cout<<"Ä¿Ç°×÷Òµ±íĞÅÏ¢ÒÑ´æÈë¡°×÷Òµ±í.txt¡±£¡"<<endl;	
+	for(int i = 1;i <= 10;i++)//´òÓ¡Ò³±í
 	{	
 		Adata->page_table[i].PrintTable(Npage[i-1]);
-		//cout<<"è¿›ç¨‹"<<i<<"1å¯¹åº”é¡µè¡¨ä¿¡æ¯å·²å­˜å…¥â€œé¡µè¡¨"<<i<<".txtâ€ï¼"<<endl;
+		//cout<<"½ø³Ì"<<i<<"1¶ÔÓ¦Ò³±íĞÅÏ¢ÒÑ´æÈë¡°Ò³±í"<<i<<".txt¡±£¡"<<endl;
 	}
 	
-	//å…³é—­æ‰€æœ‰æ–‡ä»¶ 
+	//¹Ø±ÕËùÓĞÎÄ¼ş 
 	Adata->fmemory.close();
 	Adata->fjob.close();
 	Adata->frun.close();
@@ -310,10 +310,10 @@ int main()
 	char stop = 'a';
 	while(stop != 'e')
 	{
-		cout<<"è¯·è¾“å…¥å­—ç¬¦eé€€å‡º"<<endl;
+		cout<<"ÇëÊäÈë×Ö·ûeÍË³ö"<<endl;
 		stop = getchar();
 	}
-	cout<<"è¿è¡Œå®Œæˆï¼"; 
+	cout<<"ÔËĞĞÍê³É£¡"; 
 	return 0;
 }
 

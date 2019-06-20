@@ -1,26 +1,26 @@
 #ifndef JOB_H
 #define JOB_H
 
-//ç›¸å…³å¤´æ–‡ä»¶å£°æ˜ 
+//Ïà¹ØÍ·ÎÄ¼şÉùÃ÷ 
 #include "utils.h"
 #include "process.h"
 #include "hardware.h"
 
-//process.hç›¸å…³ç±»å£°æ˜ 
-class Instruc;//æŒ‡ä»¤ç±» 
-class Process;//è¿›ç¨‹ç±» 
-class PCB_Table;//è¿›ç¨‹è¡¨ç±» 
-class LinkQueue;//é“¾é˜Ÿåˆ—ç±» 
+//process.hÏà¹ØÀàÉùÃ÷ 
+class Instruc;//Ö¸ÁîÀà 
+class Process;//½ø³ÌÀà 
+class PCB_Table;//½ø³Ì±íÀà 
+class LinkQueue;//Á´¶ÓÁĞÀà 
 
-//job.hç›¸å…³ç±»å£°æ˜ 
-class JCB;//JCB(ä½œä¸šæ§åˆ¶å—)
-class JCB_Table;//JCBè¡¨
-class Pool_Queue;//åå¤‡é˜Ÿåˆ—
-class Job_Scheduler;//ä½œä¸šè°ƒåº¦ç¨‹åº 
+//job.hÏà¹ØÀàÉùÃ÷ 
+class JCB;//JCB(×÷Òµ¿ØÖÆ¿é)
+class JCB_Table;//JCB±í
+class Pool_Queue;//ºó±¸¶ÓÁĞ
+class Job_Scheduler;//×÷Òµµ÷¶È³ÌĞò 
 
-//hardware.hç›¸å…³ç±»å£°æ˜ 
+//hardware.hÏà¹ØÀàÉùÃ÷ 
 class Cpu;//cpu
-class Memory;//å†…å­˜
+class Memory;//ÄÚ´æ
 class Time;
 class MMU;
 
@@ -29,23 +29,23 @@ class MMU;
 class JCB
 {
 	public:	
-		//å±æ€§: 
-		//ä½œä¸šæƒ…å†µ 
-		char UserName[10];//ç”¨æˆ·å,é»˜è®¤ä¸ºzhangying 
-		int JobId;//ä½œä¸šå·
-		int ProId;//ä½œä¸šå¯¹åº”è¿›ç¨‹
-		//èµ„æºéœ€æ±‚ 
-		int RunTime;//CPUè¿è¡Œä¼°è®¡æ—¶é—´
-		int DeadLine;//æˆªæ­¢æ—¶é—´
-		int MemorySize;//æ‰€éœ€å†…å­˜å®¹é‡(ä»¥é¡µä¸ºå•ä½ï¼Œ10â€”â€”20é¡µ)
-		//èµ„æºä½¿ç”¨æƒ…å†µ 
-		int InTime;//è¿›å…¥ç³»ç»Ÿæ—¶é—´
-		int StarTime;//å¼€å§‹è¿è¡Œæ—¶é—´
-		int MemoryAddress;//å†…å­˜åœ°å€ 
+		//ÊôĞÔ: 
+		//×÷ÒµÇé¿ö 
+		char UserName[10];//ÓÃ»§Ãû,Ä¬ÈÏÎªzhangying 
+		int JobId;//×÷ÒµºÅ
+		int ProId;//×÷Òµ¶ÔÓ¦½ø³Ì
+		//×ÊÔ´ĞèÇó 
+		int RunTime;//CPUÔËĞĞ¹À¼ÆÊ±¼ä
+		int DeadLine;//½ØÖ¹Ê±¼ä
+		int MemorySize;//ËùĞèÄÚ´æÈİÁ¿(ÒÔÒ³Îªµ¥Î»£¬10¡ª¡ª20Ò³)
+		//×ÊÔ´Ê¹ÓÃÇé¿ö 
+		int InTime;//½øÈëÏµÍ³Ê±¼ä
+		int StarTime;//¿ªÊ¼ÔËĞĞÊ±¼ä
+		int MemoryAddress;//ÄÚ´æµØÖ· 
 		 	
-		//æ–¹æ³•: 
-		JCB(); //æ„é€ å‡½æ•°
-		void Init(int jobid,int intime,int memorysize);//åˆå§‹åŒ–å‡½æ•° 
+		//·½·¨: 
+		JCB(); //¹¹Ôìº¯Êı
+		void Init(int jobid,int intime,int memorysize);//³õÊ¼»¯º¯Êı 
 				
 	protected:				
 };
@@ -54,24 +54,24 @@ class JCB
 class JCB_Table
 {
 	public:	
-		//å±æ€§: 
-		JCB *jcb; // å­˜å‚¨ç©ºé—´åŸºå€ 
-		int length;   //è¡¨é•¿ 
+		//ÊôĞÔ: 
+		JCB *jcb; // ´æ´¢¿Õ¼ä»ùÖ· 
+		int length;   //±í³¤ 
 		
-		//æ–¹æ³•:
+		//·½·¨:
 		JCB_Table();
 		
-		void InsertJCB(JCB x,int i);//åœ¨JCBè¡¨çš„ç¬¬iä¸ªæ•°æ®å…ƒç´ ä¹‹å‰æ’å…¥ä¸€ä¸ªJCBx (JCBè¡¨çš„0ä½ç©ºå‡º)
-		void SearchJobId(int id,JCB &temp);//æ ¹æ®ä½œä¸šå·ï¼ŒæŸ¥æ‰¾JCBè¡¨ä¸­çš„æŸä¸ªä½œä¸šï¼Œè¿”å›ç»™åŒç±»çš„å‚æ•°  
-		void DeleteJobId(int id);//æ ¹æ®ä½œä¸šå·ï¼Œåœ¨JCBè¡¨ä¸­åˆ é™¤ç›¸åº”JCB
-		void PrintTable(ofstream &file);//æ‰“å°ä½œä¸šè¡¨ 
+		void InsertJCB(JCB x,int i);//ÔÚJCB±íµÄµÚi¸öÊı¾İÔªËØÖ®Ç°²åÈëÒ»¸öJCBx (JCB±íµÄ0Î»¿Õ³ö)
+		void SearchJobId(int id,JCB &temp);//¸ù¾İ×÷ÒµºÅ£¬²éÕÒJCB±íÖĞµÄÄ³¸ö×÷Òµ£¬·µ»Ø¸øÍ¬ÀàµÄ²ÎÊı  
+		void DeleteJobId(int id);//¸ù¾İ×÷ÒµºÅ£¬ÔÚJCB±íÖĞÉ¾³ıÏàÓ¦JCB
+		void PrintTable(ofstream &file);//´òÓ¡×÷Òµ±í 
 		
 				
 	protected:				
 };
 
-//Pool_Queue(åå¤‡é˜Ÿåˆ—)
-//é“¾é˜Ÿåˆ—ç»“ç‚¹ç±»å‹å®šä¹‰
+//Pool_Queue(ºó±¸¶ÓÁĞ)
+//Á´¶ÓÁĞ½áµãÀàĞÍ¶¨Òå
 typedef struct QNode_J  
 {
 	JCB data;
@@ -81,19 +81,19 @@ typedef struct QNode_J
 class Pool_Queue
 {
 	public:	
-		//å±æ€§ 
-		QueuePtr_J front; //å¤´æŒ‡é’ˆï¼Œdataä¸å­˜æ”¾å…ƒç´ 
-		QueuePtr_J rear;  //å°¾æŒ‡é’ˆï¼Œdataå­˜æ”¾æœ€åä¸€ä¸ªå…ƒç´ 
+		//ÊôĞÔ 
+		QueuePtr_J front; //Í·Ö¸Õë£¬data²»´æ·ÅÔªËØ
+		QueuePtr_J rear;  //Î²Ö¸Õë£¬data´æ·Å×îºóÒ»¸öÔªËØ
 		
-		//æ–¹æ³• 
+		//·½·¨ 
 		Pool_Queue();
 
-		void EnQueue(JCB e);  //å…¥é˜Ÿåˆ—
-		void DeQueue(JCB &e); //å‡ºé˜Ÿåˆ—
-		void GetTop(JCB &e);  //å–é˜Ÿåˆ—å¤´å…ƒç´ 
-		void PrintQueue(); //éå†é˜Ÿåˆ—
-		int LenQueue();   //å–é˜Ÿåˆ—é•¿åº¦
-		void MinPriority(JCB &e);//æ¯æ¬¡é€‰å–æœ€å°ä¼˜å…ˆçº§çš„è¿›ç¨‹
+		void EnQueue(JCB e);  //Èë¶ÓÁĞ
+		void DeQueue(JCB &e); //³ö¶ÓÁĞ
+		void GetTop(JCB &e);  //È¡¶ÓÁĞÍ·ÔªËØ
+		void PrintQueue(); //±éÀú¶ÓÁĞ
+		int LenQueue();   //È¡¶ÓÁĞ³¤¶È
+		void MinPriority(JCB &e);//Ã¿´ÎÑ¡È¡×îĞ¡ÓÅÏÈ¼¶µÄ½ø³Ì
 		void sort();
 		//void DeleteQueue(int v);
 		
@@ -103,26 +103,26 @@ class Pool_Queue
 };
 
 /*
-2ã€æ‰¹å¤„ç†ä½œä¸šçš„è°ƒåº¦ï¼›ä½œä¸šè°ƒåº¦ç¨‹åºéœ€å®Œæˆä»¥ä¸‹ä»»åŠ¡ï¼š
-	a.é€‰æ‹©ä½œä¸šã€‚å…ˆæ¥å…ˆæœåŠ¡ç®—æ³•
-	b.åˆ†é…èµ„æºã€‚ä½œä¸šè°ƒåº¦ç¨‹åºä¸å­˜å‚¨ç®¡ç†ç¨‹åºè¿›è¡Œé€šè®¯ï¼Œä¸ºä½œä¸šåˆ†é…æ‰€éœ€çš„èµ„æºã€‚
-	c.åˆ›å»ºè¿›ç¨‹ã€‚æ¯å½“é€‰ä¸­ä½œä¸šä¸”å°†å…¶è£…å…¥å†…å­˜æ—¶ï¼Œç³»ç»Ÿå°±ä¸ºæ­¤ä½œä¸šåˆ›å»ºåº”ç”¨è¿›ç¨‹ï¼Œç”ŸæˆPCBåŠå¯¹åº”è¿›ç¨‹å®ä½“ï¼Œè¿™äº›è¿›ç¨‹å°†åœ¨ä½çº§è°ƒåº¦æ§åˆ¶ä¸‹å ç”¨å¤„ç†å™¨è¿è¡Œã€‚ï¼ˆå¯åŒæ—¶è£…å…¥å¤šä¸ªä½œä¸šå¹¶å¯åŠ¨è¿è¡Œï¼‰
-	d.åç»­å¤„ç†ã€‚ä½œä¸šæ­£å¸¸ç»“æŸæˆ–å‡ºé”™ç»ˆæ­¢æ—¶ï¼Œä½œä¸šè°ƒåº¦ç¨‹åºè¦åšå¥½ä½œä¸šæ’¤ç¦»å’Œå®Œå–„å·¥ä½œï¼Œå¦‚æ‰“å°è¾“å‡ºä¿¡æ¯ã€å›æ”¶å„ç§èµ„æºã€æ’¤é”€JCBç­‰ï¼›åŒæ—¶ï¼Œå¯åŠ¨ä½œä¸šè°ƒåº¦ç¨‹åºé€‰æ‹©æ–°ä½œä¸šè¿›å…¥å†…å­˜ï¼›
+2¡¢Åú´¦Àí×÷ÒµµÄµ÷¶È£»×÷Òµµ÷¶È³ÌĞòĞèÍê³ÉÒÔÏÂÈÎÎñ£º
+	a.Ñ¡Ôñ×÷Òµ¡£ÏÈÀ´ÏÈ·şÎñËã·¨
+	b.·ÖÅä×ÊÔ´¡£×÷Òµµ÷¶È³ÌĞòÓë´æ´¢¹ÜÀí³ÌĞò½øĞĞÍ¨Ñ¶£¬Îª×÷Òµ·ÖÅäËùĞèµÄ×ÊÔ´¡£
+	c.´´½¨½ø³Ì¡£Ã¿µ±Ñ¡ÖĞ×÷ÒµÇÒ½«Æä×°ÈëÄÚ´æÊ±£¬ÏµÍ³¾ÍÎª´Ë×÷Òµ´´½¨Ó¦ÓÃ½ø³Ì£¬Éú³ÉPCB¼°¶ÔÓ¦½ø³ÌÊµÌå£¬ÕâĞ©½ø³Ì½«ÔÚµÍ¼¶µ÷¶È¿ØÖÆÏÂÕ¼ÓÃ´¦ÀíÆ÷ÔËĞĞ¡££¨¿ÉÍ¬Ê±×°Èë¶à¸ö×÷Òµ²¢Æô¶¯ÔËĞĞ£©
+	d.ºóĞø´¦Àí¡£×÷ÒµÕı³£½áÊø»ò³ö´íÖÕÖ¹Ê±£¬×÷Òµµ÷¶È³ÌĞòÒª×öºÃ×÷Òµ³·ÀëºÍÍêÉÆ¹¤×÷£¬Èç´òÓ¡Êä³öĞÅÏ¢¡¢»ØÊÕ¸÷ÖÖ×ÊÔ´¡¢³·ÏúJCBµÈ£»Í¬Ê±£¬Æô¶¯×÷Òµµ÷¶È³ÌĞòÑ¡ÔñĞÂ×÷Òµ½øÈëÄÚ´æ£»
 */
-//Job_Scheduler(ä½œä¸šè°ƒåº¦ç¨‹åºï¼‰ 
+//Job_Scheduler(×÷Òµµ÷¶È³ÌĞò£© 
 class Job_Scheduler
 {
 	public:	
-		//å±æ€§ 
+		//ÊôĞÔ 
 		
 		
-		//æ–¹æ³• 
+		//·½·¨ 
 		Job_Scheduler();
 		int go(Pool_Queue &pool_queue,JCB &temp,Memory &memory,Page_Table &page_table,Time &timeq,PCB_Table &pcb_table,LinkQueue &ready,JCB_Table &jcb_table);
-		void ChooseJob(Pool_Queue &pool_queue,JCB &temp);//é€‰æ‹©ä½œä¸š(å…ˆæ¥å…ˆæœåŠ¡ç®—æ³•),ä»åå¤‡é˜Ÿåˆ—ä¸­å–å‡ºä¸€ä¸ªJCBç»™temp 
-		int AllocatinResource(Memory &memory,JCB jcb,Page_Table &page_table,Pool_Queue &pool_queue,JCB_Table &jcb_table);//åˆ†é…èµ„æº 
-		int CreateProcees(JCB temp,Time &timeq,PCB_Table &pcb_table,LinkQueue &ready);//åˆ›å»ºè¿›ç¨‹
-		int FollowWork();//åç»­å¤„ç† 
+		void ChooseJob(Pool_Queue &pool_queue,JCB &temp);//Ñ¡Ôñ×÷Òµ(ÏÈÀ´ÏÈ·şÎñËã·¨),´Óºó±¸¶ÓÁĞÖĞÈ¡³öÒ»¸öJCB¸øtemp 
+		int AllocatinResource(Memory &memory,JCB jcb,Page_Table &page_table,Pool_Queue &pool_queue,JCB_Table &jcb_table);//·ÖÅä×ÊÔ´ 
+		int CreateProcees(JCB temp,Time &timeq,PCB_Table &pcb_table,LinkQueue &ready);//´´½¨½ø³Ì
+		int FollowWork();//ºóĞø´¦Àí 
 				
 	protected:				
 };
