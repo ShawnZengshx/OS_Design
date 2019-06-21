@@ -6,7 +6,7 @@
 //构造函数 
 Cpu::Cpu() 
 {
-	PC = 1;//程序计数器
+	NowProcessID = 1;//程序计数器
 	IR = 0;//指令寄存器 
 	PSW = 0;//0为空闲，1为忙碌 ,//状态寄存器
 }
@@ -22,7 +22,7 @@ int Cpu::Sceneprotection(Process &e)
 //CPU现场恢复函数
 int Cpu::Scenerevover(Process e)
 {
-	PC = e.ProID;
+	NowProcessID = e.ProID;
 	IR = e.PSW;
 	PSW = 1;
 	return 0;
@@ -147,14 +147,14 @@ MMU::MMU()
 	page_table_addr = NULL;	
 }
 
-void MMU::go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &pianyi,int &paddr, BlockQueue &cur_block_queue)
+void MMU::go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &offset,int &paddr, BlockQueue &cur_block_queue)
 {
 	
 	PageTableAddr(page_table);
-	BreakAddr(addr,pageid,pianyi);	
-	cout<<"逻辑地址分解完成:页号为"<<pageid<<",偏移地址为"<<pianyi<<endl; 
-	file<<"逻辑地址分解完成:页号为"<<pageid<<",偏移地址为"<<pianyi<<endl; 
-	VisitPageTable(file,pageid,pianyi,paddr, cur_block_queue);
+	BreakAddr(addr,pageid,offset);	
+	cout<<"逻辑地址分解完成:页号为"<<pageid<<",偏移地址为"<<offset<<endl; 
+	file<<"逻辑地址分解完成:页号为"<<pageid<<",偏移地址为"<<offset<<endl; 
+	VisitPageTable(file,pageid,offset,paddr, cur_block_queue);
 }
 //管理页表基址寄存器 
 //(当进程被调度到CPU上运行时，操作系统自动把此进程PCB中的页表起始地址装入硬件页表基址寄存器，
@@ -165,20 +165,20 @@ void MMU::PageTableAddr(Page_Table &page_table)
 }
 
 //分解逻辑地址
-void MMU::BreakAddr(int addr,int &pageid,int &pianyi)
+void MMU::BreakAddr(int addr,int &pageid,int &offset)
 {
 	pageid = addr/1000;
-	pianyi = addr%1000;
+	offset = addr%1000;
 }
 
 //访问页表
-void MMU::VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr, BlockQueue &cur_block_queue)
+void MMU::VisitPageTable(ofstream &file,int pageid,int offset,int &paddr, BlockQueue &cur_block_queue)
 {
 	Page temp;
 	page_table_addr->SearchPageId(pageid,temp);//页号为索引搜索页表
 	if(temp.Dwell == 1)//如果页表命中,可送出页框号，并与页内位移拼接成物理地址
 	{
-		paddr = temp.BlockId * 1000 + pianyi;
+		paddr = temp.BlockId * 1000 + offset;
 		cout<<"页表命中，物理地址为"<<paddr<<endl;
 		file<<"页表命中，物理地址为"<<paddr<<endl;
 	}

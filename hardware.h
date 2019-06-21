@@ -33,7 +33,7 @@ class Cpu
 {
 	public:
 		//属性 
-		int PC;   //程序计数器 
+		int NowProcessID;   //程序计数器 
 		int IR;   //指令寄存器 
 		int PSW;  //状态寄存器
 		
@@ -77,10 +77,10 @@ class MMU
 		
 		//方法 
 		MMU();    //构造函数 
-		void go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &pianyi,int &paddr, BlockQueue &cur_block_queue);
+		void go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &offset,int &paddr, BlockQueue &cur_block_queue);
 		void PageTableAddr(Page_Table &page_table);//管理页表基址寄存器 
-		void BreakAddr(int addr,int &pageid,int &pianyi);//分解逻辑地址
-		void VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr, BlockQueue &cur_block_queue);//访问页表
+		void BreakAddr(int addr,int &pageid,int &offset);//分解逻辑地址
+		void VisitPageTable(ofstream &file,int pageid,int offset,int &paddr, BlockQueue &cur_block_queue);//访问页表
 		void MissingPage(int id,BlockQueue &cur_block_queue);//发出异常 
 		
 	protected:
