@@ -7,7 +7,7 @@
 //构造函数
 JCB::JCB()
 {
-	strcpy(UserName,"zhangying");//用户名,默认为zhangying 
+	strcpy(UserName,"Admin");//用户名,默认为Admin
 	JobId = 0;//作业号
 	
 	//资源需求 
@@ -122,11 +122,11 @@ void JCB_Table::PrintTable(ofstream &file)
 	//char UserName[10];//用户名,默认为zhangying //资源需求 //int RunTime;//CPU运行估计时间//int DeadLine;//截止时间
 	//int MemorySize;//所需内存容量(以页为单位，10——20页)//资源使用情况 //int InTime;//进入系统时间	//int StarTime;//开始运行时间
 	//int MemoryAddress;//内存地址 //int ProId;//作业对应进程 
-	file<<"作业号"<<setw(15)<<"用户名"<<setw(20)<<"进程号"<<setw(15)<<"估计时间"<<setw(20)<<"截止时间"<<setw(20)<<"所需内存"
+	file<<"作业号"<<setw(15)<<"用户名"<<setw(20)<<"进程号"<<setw(15)<<"所需内存"
 			<<setw(20)<<"进入系统时间"<<setw(20)<<"开始运行时间"<<setw(20)<<"内存地址"<<endl;
 	for(int i = 1;i <= length;i++)
 	{
-		file<<jcb[i].JobId<<setw(15)<<jcb[i].UserName<<setw(20)<<jcb[i].ProId<<setw(15)<<jcb[i].RunTime<<setw(20)<<jcb[i].DeadLine<<setw(20)<<jcb[i].MemorySize
+		file<<jcb[i].JobId<<setw(15)<<jcb[i].UserName<<setw(20)<<jcb[i].ProId<<setw(15)<<jcb[i].MemorySize
 			<<setw(20)<<jcb[i].InTime<<setw(20)<<jcb[i].StarTime<<setw(20)<<jcb[i].MemoryAddress<<endl;
 	}
 	file<<"\r\n";

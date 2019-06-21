@@ -31,7 +31,7 @@ class JCB
 	public:	
 		//属性: 
 		//作业情况 
-		char UserName[10];//用户名,默认为zhangying 
+		char UserName[10];//用户名,默认为Admin
 		int JobId;//作业号
 		int ProId;//作业对应进程
 		//资源需求 
