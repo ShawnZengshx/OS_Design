@@ -221,7 +221,7 @@ int main()
 				//回收内存 
 				JCB jcb;
 				Adata->jcb_table.SearchJobId(e.JobId,jcb);
-				Adata->memory.RecycleSpace(jcb.MemorySize-5,jcb.JobId);
+				Adata->memory.RecycleSpace(jcb.MemorySize-MISS_PAGE_NUM,jcb.JobId);
 				cout<<"****作业"<<e.ProID<<"已运行完成！****"<<endl; 
 				Adata->frun<<"****作业"<<e.ProID<<"已运行完成！****"<<endl;
 				cout<<"****已回收"<<"作业"<<e.ProID<<"的资源！****"<<endl; 
@@ -268,7 +268,7 @@ int main()
 				//回收内存 
 				JCB jcb;
 				Adata->jcb_table.SearchJobId(e.JobId,jcb);
-				Adata->memory.RecycleSpace(jcb.MemorySize-5,jcb.JobId);
+				Adata->memory.RecycleSpace(jcb.MemorySize-MISS_PAGE_NUM,jcb.JobId);
 				cout<<"****作业"<<e.ProID<<"已运行完成！****"<<endl; 
 				Adata->frun<<"****作业"<<e.ProID<<"已运行完成！****"<<endl;
 				cout<<"****已回收"<<"作业"<<e.ProID<<"的资源！****"<<endl; 

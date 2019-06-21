@@ -10,7 +10,7 @@
 #include <iomanip>
 #include <math.h>
 #include <time.h>
-
+#define MISS_PAGE_NUM 5
 using namespace std;
 
 //utils.h相关类声明 

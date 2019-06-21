@@ -57,13 +57,13 @@ Memory::Memory()
 */ 
 int Memory::AllocationSpace(int size,int JobId,Page_Table &page_table, BlockQueue &block_queue)
 {
-	if((size-5) <= FreeSpace)//如果空闲块数满足，则分配 
+	if((size-MISS_PAGE_NUM) <= FreeSpace)//如果空闲块数满足，则分配 
 	{
 		//初始化页表
 		for(int k = 0;k < size;k++)
 		{
 			Page page;
-			if(k < size -5)
+			if(k < size -MISS_PAGE_NUM)
 			{
 				page.Init(k,1);//选择作业的部分调入内存
 				page_table.InsertPage(page,k+1); 
@@ -77,7 +77,7 @@ int Memory::AllocationSpace(int size,int JobId,Page_Table &page_table, BlockQueu
 		
 		int ii = 1;
 		int j = 1;
-		size = size -5;
+		size = size -MISS_PAGE_NUM;
 		while(size > 0)
 		{
 			if(block_table.block[ii].BlockState == 0)//找出空闲的块 
