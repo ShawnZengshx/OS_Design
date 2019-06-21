@@ -7,6 +7,7 @@
 //page.h相关类声明 
 class Block;//物理块
 class Block_Table;//物理块表 
+class BlockQueue;	//物理块队列 
 class Page;//页表项
 class Page_Table;//页表 
 
@@ -84,6 +85,23 @@ class Block_Table
 				
 	protected:
 };
+
+//物理块队列类
+typedef struct Bnode{
+	Block data;
+	struct Bnode *next;
+}BlockNode, *BlockNodePtr;
+class BlockQueue{
+	public:
+		BlockNodePtr head;	//头节点
+		BlockNodePtr rear;	//尾节点
+		
+		BlockQueue();
+		void AppendBlock(Block input_block);		//物理块入队 
+		void PopBlock(Block &output_block);			//物理块出队 
+		void GetTop(Block &output_block); 								//获取队首物理块 
+		
+}; 
 
 
 #endif

@@ -392,27 +392,7 @@ void LinkQueue::sort()
 	
 }
 
-/*void LinkQueue::DeleteQueue(int v)
-{
-	QueuePtr p,q;
-	p=front;
-	if(front == rear)
-		cout<<"¶ÓÁÐÎª¿Õ£¡"<<"\n";
-	while(p->next)
-	{
-		if(p->next->data.ProID==v)
-		{
-			q=p->next;
-			p->next=q->next;
-			delete q;
-			break;
-		}
-		else
-			p=p->next;
-	}
 
-	
-}*/
 
 
 
