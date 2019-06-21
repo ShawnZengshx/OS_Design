@@ -194,4 +194,40 @@ void Block_Table::SearchBlockID(int id,Block &temp)
 	}
 } 
 
+//物理块队列类
+BlockQueue::BlockQueue() {
+	rear = new Bnode;
+	head = rear;
+	head -> next = NULL;
+}
+
+//入队
+void BlockQueue::AppendBlock(Block input_block){
+	BlockNodePtr b;
+	b = new Bnode; 
+	b->data = input_block;
+	b->next = NULL; 
+	rear->next = b;
+	rear = b; 
+} 
+
+//出队
+void  BlockQueue::PopBlock(Block &output_block){
+	BlockNodePtr b;
+	b = head->next;
+	output_block = b->data;
+	head->next = b->next;
+	if(rear == b){		//如果是最后一个元素 
+		rear = head; 
+	} 
+	delete b;
+} 
+
+//取得队首元素
+void BlockQueue::GetTop(Block &output_block){
+	BlockNodePtr b;
+	b = head->next;
+	output_block = b->data;
+} 
+
 
