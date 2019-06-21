@@ -55,7 +55,7 @@ Memory::Memory()
 返回值：1 ——>分配成功
 		0 ——> 分配失败 
 */ 
-int Memory::AllocationSpace(int size,int JobId,Page_Table &page_table)
+int Memory::AllocationSpace(int size,int JobId,Page_Table &page_table, BlockQueue &block_queue)
 {
 	if((size-5) <= FreeSpace)//如果空闲块数满足，则分配 
 	{
@@ -85,6 +85,7 @@ int Memory::AllocationSpace(int size,int JobId,Page_Table &page_table)
 				block_table.block[ii].BlockState = 1;//置占用标志 
 				block_table.block[ii].OwnerPro = JobId;//该块分配给的作业 
 				page_table.page[j].BlockId = block_table.block[ii].BlockId;//按找到的位置块号计算对应页框号，填入进程的页表 
+				block_queue.AppendBlock(block_table.block[ii]);			//将分配的物理块送入到物理块队列中去 
 				FreeSpace--;//从空闲块数中减去本次占用块数 
 				UsedSpace++;
 				size--;
@@ -146,14 +147,14 @@ MMU::MMU()
 	page_table_addr = NULL;	
 }
 
-void MMU::go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &pianyi,int &paddr)
+void MMU::go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &pianyi,int &paddr, BlockQueue &cur_block_queue)
 {
 	
 	PageTableAddr(page_table);
 	BreakAddr(addr,pageid,pianyi);	
 	cout<<"逻辑地址分解完成:页号为"<<pageid<<",偏移地址为"<<pianyi<<endl; 
 	file<<"逻辑地址分解完成:页号为"<<pageid<<",偏移地址为"<<pianyi<<endl; 
-	VisitPageTable(file,pageid,pianyi,paddr);
+	VisitPageTable(file,pageid,pianyi,paddr, cur_block_queue);
 }
 //管理页表基址寄存器 
 //(当进程被调度到CPU上运行时，操作系统自动把此进程PCB中的页表起始地址装入硬件页表基址寄存器，
@@ -171,7 +172,7 @@ void MMU::BreakAddr(int addr,int &pageid,int &pianyi)
 }
 
 //访问页表
-void MMU::VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr)
+void MMU::VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr, BlockQueue &cur_block_queue)
 {
 	Page temp;
 	page_table_addr->SearchPageId(pageid,temp);//页号为索引搜索页表
@@ -183,7 +184,7 @@ void MMU::VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr)
 	}
 	else
 	{
-		MissingPage(pageid);//缺页异常 
+		MissingPage(pageid,cur_block_queue);//缺页异常 
 		cout<<"页表未命中！产生缺页中断！"<<endl;
 		cout<<"替换成功！"<<endl;
 		cout<<"重新运行中断指令！"<<endl;
@@ -194,11 +195,14 @@ void MMU::VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr)
 }
 
 //发出异常
-void MMU::MissingPage(int id)
+void MMU::MissingPage(int id, BlockQueue &cur_block_queue)
 {
 	//page_table_addr->SearchPageId(id,temp);//根据页号，搜索外页号 
 	page_table_addr->page[id].Dwell = 1;//调入内存 
-	page_table_addr->page[id].BlockId = id*987%100;
+	Block top_block;
+	cur_block_queue.PopBlock(top_block);		//获取物理块队首物理块 
+	cur_block_queue.AppendBlock(top_block);		//将其添加到队列的某位 
+	page_table_addr->page[id].BlockId = top_block.BlockId;
 }
 
 

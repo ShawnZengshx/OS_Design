@@ -39,6 +39,11 @@ void JCB::Init(int jobid,int intime,int memorysize)
 	cout<<"已为新作业建立作业控制块，作业ID为："<<jobid<<endl; 
 } 
 
+//获取物理块队列函数
+void JCB::GetBlockQueue(BlockQueue input_b_queue){
+	block_queue = input_b_queue;
+} 
+
 /*
 -----------------------------------JCB_Table类-----------------------------------------
 */
@@ -248,7 +253,6 @@ Job_Scheduler::Job_Scheduler()
 int Job_Scheduler::go(Pool_Queue &pool_queue,JCB &temp,Memory &memory,Page_Table &page_table,Time &timeq,PCB_Table &pcb_table,LinkQueue &ready,JCB_Table &jcb_table)
 {
 	ChooseJob(pool_queue,temp);//a.选择作业。
-	
 	int i = AllocatinResource(memory,temp,page_table,pool_queue,jcb_table);//	b.分配资源。
 	if(i == 1)
 	{
@@ -281,13 +285,15 @@ void Job_Scheduler::ChooseJob(Pool_Queue &pool_queue,JCB &temp)
 //分配资源（作业调度程序与存储管理程序进行通讯，为作业分配所需的资源。） 
 int Job_Scheduler::AllocatinResource(Memory &memory,JCB jcb,Page_Table &page_table,Pool_Queue &pool_queue,JCB_Table &jcb_table)
 {
-	int i = memory.AllocationSpace(jcb.MemorySize,jcb.JobId,page_table);
+	BlockQueue input_block_queue; 
+	int i = memory.AllocationSpace(jcb.MemorySize,jcb.JobId,page_table,input_block_queue);
 	if(i == 1)
 	{
 		cout<<"已为作业"<<jcb.JobId<<"分配所需内存资源!"<<endl;
 		pool_queue.DeQueue(jcb);
 		jcb_table.jcb[jcb.JobId].ProId = jcb.JobId;//改变JCB表中相关信息 
 		jcb_table.jcb[jcb.JobId].StarTime = jcb_table.jcb[jcb.JobId].InTime + 10;
+		jcb_table.jcb[jcb.JobId].block_queue = input_block_queue;	//将分配好的物理块队列给该作业 
 		return 1;
 	}
 	else

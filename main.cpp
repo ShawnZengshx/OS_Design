@@ -197,11 +197,12 @@ int main()
 					
 		if(Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].State == 1)//当指令为用户态操作 
 		{
+			BlockQueue current_block_queue = Adata->jcb_table.jcb[e.JobId].block_queue; 		//获取当前的物理块队列 
 			int addr = Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].addr;
 			int pageid;int pianyi;int paddr;
 			cout<<"该指令为用户态计算操作"<<",逻辑地址为"<<addr<<endl; 
 			Adata->frun<<"该指令为用户态计算操作"<<",逻辑地址为"<<addr<<endl; 
-			Adata->mmu.go(Adata->frun,Adata->page_table[e.ProID],addr,pageid,pianyi,paddr);//MMU工作 
+			Adata->mmu.go(Adata->frun,Adata->page_table[e.ProID],addr,pageid,pianyi,paddr, current_block_queue);//MMU工作 
 			cout<<endl;
 			Adata->frun<<endl; 
 			Sleep(Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].time); 
@@ -242,11 +243,12 @@ int main()
 		}
 		else//当指令为I/O操作 
 		{
+			BlockQueue current_block_queue = Adata->jcb_table.jcb[e.JobId].block_queue; 		//获取当前的物理块队列 
 			int addr = Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].addr;
 			int pageid;int pianyi;int paddr;
 			cout<<"该指令为I/O操作"<<",逻辑地址为"<<addr<<endl; 
 			Adata->frun<<"该指令为I/O操作"<<",逻辑地址为"<<addr<<endl; 
-			Adata->mmu.go(Adata->frun,Adata->page_table[e.ProID],addr,pageid,pianyi,paddr);//MMU工作 
+			Adata->mmu.go(Adata->frun,Adata->page_table[e.ProID],addr,pageid,pianyi,paddr, current_block_queue);//MMU工作 
 			cout<<endl;
 			Adata->frun<<endl; 
 			Sleep(Adata->pcb_table.process[e.ProID].instruc_arry[CPU.IR-1].time); 

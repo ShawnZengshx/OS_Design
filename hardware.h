@@ -6,6 +6,7 @@
 #include "process.h"
 #include "page.h" 
 
+
 //process.h头文件中相关类声明 
 class Instruc; 
 class PCB_Table;
@@ -17,12 +18,14 @@ class Block;//物理块
 class Block_Table;//物理块表 
 class Page;//页表项
 class Page_Table;//页表 
+class BlockQueue; //物理块队列 
 
 //hardware.h相关类声明 
 class Cpu;//cpu
 class Memory;//内存
 class Time;
 class MMU;
+
 
 
 //CPU
@@ -59,7 +62,7 @@ class Memory
 		
 	//方法 
 	Memory();
-	int AllocationSpace(int size,int JobId,Page_Table &page_table);//分配资源
+	int AllocationSpace(int size,int JobId,Page_Table &page_table, BlockQueue &block_queue);//分配资源
 	int RecycleSpace(int size,int ProId);//回收资源 
 	void Print(ofstream &file);//将物理块表输出到文件 
 }; 
@@ -74,11 +77,11 @@ class MMU
 		
 		//方法 
 		MMU();    //构造函数 
-		void go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &pianyi,int &paddr);
+		void go(ofstream &file,Page_Table &page_table,int addr,int &pageid,int &pianyi,int &paddr, BlockQueue &cur_block_queue);
 		void PageTableAddr(Page_Table &page_table);//管理页表基址寄存器 
 		void BreakAddr(int addr,int &pageid,int &pianyi);//分解逻辑地址
-		void VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr);//访问页表
-		void MissingPage(int id);//发出异常 
+		void VisitPageTable(ofstream &file,int pageid,int pianyi,int &paddr, BlockQueue &cur_block_queue);//访问页表
+		void MissingPage(int id,BlockQueue &cur_block_queue);//发出异常 
 		
 	protected:
 };

@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "process.h"
 #include "hardware.h"
+#include "page.h" 
 
 //process.h相关类声明 
 class Instruc;//指令类 
@@ -24,6 +25,7 @@ class Memory;//内存
 class Time;
 class MMU;
 
+class BlockQueue;	//物理块队列类 
 
 //JCB
 class JCB
@@ -42,10 +44,13 @@ class JCB
 		int InTime;//进入系统时间
 		int StarTime;//开始运行时间
 		int MemoryAddress;//内存地址 
+		
+		BlockQueue block_queue;		//分配到的物理块队列类 
 		 	
 		//方法: 
 		JCB(); //构造函数
 		void Init(int jobid,int intime,int memorysize);//初始化函数 
+		void GetBlockQueue(BlockQueue input_b_queue);	//将物理块队列送入 
 				
 	protected:				
 };
