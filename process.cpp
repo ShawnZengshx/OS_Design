@@ -13,6 +13,7 @@ Instruc::Instruc()
 
 void Instruc::Init(int id,Time &timeq)
 {
+	int default_IO_time = 50;
 	ID = id;       //ID从1开始 
 	State = timeq.RandNum(1,2);       //Instruc_State初始化为1或2
 	if(State == 1)//当Instruc_State=0或1时, Instruc_Times=产生[10-40]之间的随机10ms倍数的整数；
@@ -21,7 +22,7 @@ void Instruc::Init(int id,Time &timeq)
 	}
 	else//当 Instruc_State=2 时, Instruc_Times=50，用户进程发生 I/O 阻塞请求，并假设完成 I/O 数据通信时间为 50ms，之后可唤醒
 	{
-		time = 50;
+		time = default_IO_time;
 	}
 	addr = ID*1000 + timeq.RandNum(0,999); //生成指令地址 
 }
@@ -53,7 +54,7 @@ Process::Process()
 	
 	InstrucNum = 20; //进程包含的指令数目（InstrucNum）：用[5-20]以内的随机整数产生；
 	
-	CurrentInsID = 1;  //PSW中保存该进程当前执行的指令编号。例如，1表示正在执行第1条指令 
+	CurrentInsID = 1;  //CurrentInsID中保存该进程当前执行的指令编号。例如，1表示正在执行第1条指令 
 	
 	ProState = 1;  //进程状态（ProState）:0为阻塞态，1为就绪态，2为运行态。默认置为就绪态 
 	
@@ -74,9 +75,9 @@ Process::Process(int id,int intime,int instrucnum,Time &timeq)
 	
 	RunTimes = 0;  //进程运行时间（RunTime）:统计记录进程当前已运行了多少时间，此字段开始时为空，进程运行过程中不断保存和记录。
 	
-	InstrucNum = instrucnum; //进程包含的指令数目（InstrucNum）：用[5-20]以内的随机整数产生；
+	InstrucNum = instrucnum; //进程包含的指令数目（InstrucNum）：简便起见我们使用需要内存个数初始化这个值，范围是15~25 
 	
-	CurrentInsID = 1;  //PSW中保存该进程当前执行的指令编号。例如，1表示正在执行第1条指令 
+	CurrentInsID = 1;  //CurrentInsID中保存该进程当前执行的指令编号。例如，1表示正在执行第1条指令 
 	
 	ProState = 1;  //进程状态（ProState）:0为阻塞态，1为就绪态，2为运行态。默认置为就绪态 
 	
@@ -234,7 +235,7 @@ void PCB_Table::PrintTable(char *a)
 	//	Instruc *instruc_arry;//进程包含的指令数组指针 
 	//	int alltime;//进程周转时间 
 	file<<"ProID"<<setw(15)<<"JobId"<<setw(15)<<"InTimes"<<setw(15)<<"ProState"<<setw(15)<<"RunTime"<<setw(15)<<"InstrucNum"
-			<<setw(15)<<"PSW"<<setw(15)<<"Instruc_ID"<<setw(20)<<"Instruc_State"<<setw(20)<<"Instruc_Times(ms)"<<setw(20)<<"Instruc_Addr";
+			<<setw(15)<<"CurrentInsID"<<setw(15)<<"Instruc_ID"<<setw(20)<<"Instruc_State"<<setw(20)<<"Instruc_Times(ms)"<<setw(20)<<"Instruc_Addr";
 	for(int i = 1;i <= length;i++)
 	{
 		file<<"\r\n"<<process[i].ProID<<setw(15)<<process[i].JobId<<setw(15)<<process[i].InTimes<<setw(15)<<
