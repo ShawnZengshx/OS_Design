@@ -97,11 +97,10 @@ void Page_Table::PrintTable(char *a)
 	//	int Dwell;//驻留标志位，0表示不在内存，1表示在内存
 	//	int Yinyong;//引用位
 	//	int Modifi;//修改位，0表示未被修改，1表示被修改 
-	file<<"PageId"<<setw(15)<<"BlockId"<<setw(15)<<"Dwell"<<setw(15)<<"Yinyong"<<setw(15)<<"Modifi";
+	file<<"PageId"<<setw(15)<<"BlockId"<<setw(15)<<"Dwell";
 	for(int i = 1;i <= length;i++)
 	{
-		file<<"\r\n"<<page[i].PageId<<setw(15)<<page[i].BlockId<<setw(15)<<page[i].Dwell<<setw(15)
-		<<page[i].Yinyong<<setw(15)<<page[i].Modifi<<setw(15);
+		file<<"\r\n"<<page[i].PageId<<setw(15)<<page[i].BlockId<<setw(15)<<page[i].Dwell;
 	}
 	file.close();
 }

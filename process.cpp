@@ -23,7 +23,7 @@ void Instruc::Init(int id,Time &timeq)
 	{
 		time = 50;
 	}
-	addr = ID*1000 +	timeq.RandNum(0,999); //生成指令地址 
+	addr = ID*1000 + timeq.RandNum(0,999); //生成指令地址 
 }
 
 //修改指令ID 
