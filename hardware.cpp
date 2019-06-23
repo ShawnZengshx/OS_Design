@@ -14,16 +14,16 @@ Cpu::Cpu()
 //CPU现场保护函数
 int Cpu::Sceneprotection(Process &e)
 {
-	e.PSW = IR;
+	e.CurrentInsID = IR;
 	PSW = 0;
 	return 0;
 }
 
 //CPU现场恢复函数
-int Cpu::Scenerevover(Process e)
+int Cpu::SceneRecover(Process e)
 {
 	NowProcessID = e.ProID;
-	IR = e.PSW;
+	IR = e.CurrentInsID;
 	PSW = 1;
 	return 0;
 }

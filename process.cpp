@@ -53,7 +53,7 @@ Process::Process()
 	
 	InstrucNum = 20; //进程包含的指令数目（InstrucNum）：用[5-20]以内的随机整数产生；
 	
-	PSW = 1;  //PSW中保存该进程当前执行的指令编号。例如，1表示正在执行第1条指令 
+	CurrentInsID = 1;  //PSW中保存该进程当前执行的指令编号。例如，1表示正在执行第1条指令 
 	
 	ProState = 1;  //进程状态（ProState）:0为阻塞态，1为就绪态，2为运行态。默认置为就绪态 
 	
@@ -76,7 +76,7 @@ Process::Process(int id,int intime,int instrucnum,Time &timeq)
 	
 	InstrucNum = instrucnum; //进程包含的指令数目（InstrucNum）：用[5-20]以内的随机整数产生；
 	
-	PSW = 1;  //PSW中保存该进程当前执行的指令编号。例如，1表示正在执行第1条指令 
+	CurrentInsID = 1;  //PSW中保存该进程当前执行的指令编号。例如，1表示正在执行第1条指令 
 	
 	ProState = 1;  //进程状态（ProState）:0为阻塞态，1为就绪态，2为运行态。默认置为就绪态 
 	
@@ -238,7 +238,7 @@ void PCB_Table::PrintTable(char *a)
 	for(int i = 1;i <= length;i++)
 	{
 		file<<"\r\n"<<process[i].ProID<<setw(15)<<process[i].JobId<<setw(15)<<process[i].InTimes<<setw(15)<<
-			process[i].ProState<<setw(15)<<process[i].RunTimes<<setw(15)<<process[i].InstrucNum<<setw(18)<<process[i].PSW<<setw(15);
+			process[i].ProState<<setw(15)<<process[i].RunTimes<<setw(15)<<process[i].InstrucNum<<setw(18)<<process[i].CurrentInsID<<setw(15);
 		//输出指令的信息
 		for(int j=0;j<process[i].InstrucNum;j++)
 		{

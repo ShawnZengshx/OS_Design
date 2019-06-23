@@ -75,7 +75,7 @@ DWORD WINAPI ThreadFun(LPVOID pM)
 int main()
 {
 	                                                //程序初始化
-	cout<<"=                        虚拟页式存储管理系统                              ="<<endl;
+	cout<<"\n-------------------------------虚拟页式存储管理系统-------------------------------\n"<<endl;
 	cout<<"程序初始化.."<<endl;
 	Sleep(1000);
 	srand(time(0));//时间作种	
@@ -185,7 +185,7 @@ int main()
 					 
 		//运行该进程第一条指令 
 		Adata->pcb_table.process[e.ProID].ProState = 2;
-		CPU.Scenerevover(Adata->pcb_table.process[e.ProID]);//CPU现场回复函数 
+		CPU.SceneRecover(Adata->pcb_table.process[e.ProID]);//CPU现场回复函数 
 					
 		cout<<"进程"<<e.ProID<<"页表地址装入页表基址寄存器！"<<endl; 
 		Adata->frun<<"进程"<<e.ProID<<"页表地址装入页表基址寄存器！"<<endl; 

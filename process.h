@@ -46,7 +46,7 @@ class Process
 		int InTimes;//进程创建时间 
 		int ProState;//进程状态 
 		int RunTimes;//进程运行时间 
-		int PSW;//保存该进程当前执行的指令编号 
+		int CurrentInsID;//保存该进程当前执行的指令编号 
 		int InstrucNum;//进程包含的指令数目 
 		Instruc *instruc_arry;//进程包含的指令数组指针 
 		int alltime;//进程周转时间 

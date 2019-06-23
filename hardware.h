@@ -40,7 +40,7 @@ class Cpu
 		//方法 
 		Cpu();    //构造函数 
 		int Sceneprotection(Process &e);//CPU现场保护函数
-		int Scenerevover(Process e);//CPU现场恢复函数 
+		int SceneRecover(Process e);//CPU现场恢复函数 
 	protected:
 		 
 };
