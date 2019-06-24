@@ -316,12 +316,7 @@ int Job_Scheduler::CreateProcees(JCB temp,Time &timeq,PCB_Table &pcb_table,LinkQ
 	return 0;
 }
 
-//后续处理
-int Job_Scheduler::FollowWork()
-{
-	return 0;
-} 	
-	
+
 	
 	
 	

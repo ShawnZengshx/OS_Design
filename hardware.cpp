@@ -119,6 +119,7 @@ int Memory::RecycleSpace(int size,int ProId)
 		}
 		i++;
 	} 
+	return 0;
 }
 
 //´òÓ¡ÄÚ´æ
