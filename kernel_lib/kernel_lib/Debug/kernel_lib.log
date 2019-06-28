@@ -1,0 +1,8 @@
+﻿  hardware.cpp
+  job.cpp
+  kernel.cpp
+  kernel_lib.cpp
+  page.cpp
+  process.cpp
+  正在生成代码...
+  kernel_lib.vcxproj -> C:\Codes\cpp_codes\kernel_lib\Debug\kernel_lib.lib
